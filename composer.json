@@ -1,0 +1,22 @@
+{
+    "name": "yaim/mitter",
+    "description": "A Model-Sitter for Laravel Eloquent.",
+    "keywords": ["form generator", "model saver", "controller handler", "laravel", "eloquent"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yashar Imanlou",
+            "email": "me@yash.im"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "laravel/framework": ">=4.2"
+    },
+    "autoload": {
+        "psr-0": {
+            "Yaim\\Mitter": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
