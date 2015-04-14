@@ -1,6 +1,6 @@
 <?php
 
-namespace Mitter;
+namespace Yaim\Mitter;
 
 class IndexBuilder {
 	protected $structure;
