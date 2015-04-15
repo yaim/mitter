@@ -2,6 +2,8 @@
 
 namespace Yaim\Mitter;
 
+use Illuminate\Support\Facades\Form;
+
 class FormBuilder
 {
 	protected $structure;
