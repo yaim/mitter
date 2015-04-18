@@ -143,13 +143,8 @@ class FormBuilder
 
 		$this->html .= Form::submit("Submit ".$structure['title'], array('class' => 'btn btn-primary'));
 
-		if($structure['model'] == "Manufacture\Production") {
-			$this->html .= ' <a class="btn btn-success" href="generate-map">Generate Production Map</a>';
-			$this->html .= ' <a class="btn btn-danger" onClick="if(confirm(`Deleting this production\'s stock types means that no other relations to these stock types, would work anymore! Are you sure you want to delete these stock types?`))alert(`You are very brave!`);else {alert(`A wise decision!`); return false;}" href="delete-stock-types">Delete Stock Types</a>';
-		}
-
-		if($structure['model'] == "Warehouse\StockType") {
-			$this->html .= ' <a class="btn btn-danger" href="update-stocks">Update Stocks</a>';
+		if(isset($structure['links'])) {
+			$this->html .= $structure['links'];
 		}
 
 		$this->html .= Form::close();
