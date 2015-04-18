@@ -3,20 +3,11 @@
 namespace Yaim\Mitter;
 
 use Illuminate\Support\Facades\Response;
+use Illuminate\Routing\Controller;
 
-class ApiController extends BaseController {
+abstract class BaseApiController extends Controller {
 
-	protected static $staticRoute = [
-		"name-space-sample-models"				=>		"NameSpace\SampleModel",
-		"name-space-another-sample-models"		=>		"NameSpace\AnotherSampleModel",
-	];
-
-	protected $route = [];
-
-	public function __construct()
-	{
-		$this->route = self::$staticRoute;
-	}
+	protected $route;
 
 	public function index($model = null, $parent = null, $term_id = null)
 	{
@@ -102,31 +93,9 @@ class ApiController extends BaseController {
 		}
 
 	}
-	protected function nameSpaceAnotherSampleModel($term = null)
+
+	public function getModelName($model)
 	{
-		if(!isset($term))
-		{
-			$models = NameSpace\SampleModel::select('id', 'name')->get()->toArray();
-
-			$results['totals'] = count($models);
-			$results['results'] = $models;
-
-			return Response::json($results,200);
-		}
-
-		$models = NameSpace\SampleModel::where('id', 'like', "%$term%")
-								->orWhere('name', 'like', "%$term%")
-								->select('id', 'name')
-								->get()->toArray();
-
-		$results['totals'] = count($models);
-		$results['results'] = $models;
-
-		return Response::json($results,200);
-	}
-
-	public static function getModelName($model)
-	{
-		return self::$staticRoute[$model];
+		return $this->route[$model];
 	}
 }

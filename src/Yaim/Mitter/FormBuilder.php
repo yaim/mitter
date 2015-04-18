@@ -7,13 +7,15 @@ use Illuminate\Support\Facades\Form;
 class FormBuilder
 {
 	protected $structure;
+	protected $apiController;
 	protected $html;
 	protected $oldData = null;
 	protected $isDeleted;
 
-	public function __construct($structure, $oldData = null, $id = null)
+	public function __construct($structure, $apiController = null, $oldData = null, $id = null )
 	{
 		$this->structure = $structure;
+		$this->apiController = $apiController;
 		$this->oldData = $oldData;
 		$this->isDeleted = (isset($oldData['deleted_at'])) ? true : false;
 		$this->id = $id;
@@ -29,8 +31,6 @@ class FormBuilder
 		}
 
 		$this->formPostfix();
-
-		return $this->html;
 	}
 
 	public function formPrefix()
@@ -529,7 +529,7 @@ class FormBuilder
 			if(isset($relationId)) {
 				if(!isset($model)) {
 					$path = str_replace("/", "", $field["api"]);
-					$model = ApiController::getModelName($path);
+					$model = call_user_func([$this->apiController, 'getModelName'], $path);
 				}
 
 				$relationModel = call_user_func(array($model, 'find'), $relationId);
