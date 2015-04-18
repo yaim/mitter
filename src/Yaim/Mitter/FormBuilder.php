@@ -226,7 +226,7 @@ class FormBuilder
 		$this->html .='
 				</div>
 			</div>
-		</div><!--/form-group-->';
+		</div>';
 
 		if (!$continious)
 			$this->html .='<hr/>';
@@ -237,7 +237,7 @@ class FormBuilder
 		$this->html .='
 				</div>
 			</div>
-		</div><!--/form-group-->';
+		</div>';
 	}
 
 	public function nameFixer($name, $repeat = false, $namePrefix = null, $num = 1)
@@ -439,7 +439,7 @@ class FormBuilder
 
 		$this->html .="
 				</select>
-			</div><!--/col-sm-9--> ";
+			</div>";
 	}
 
 	public function textarea($name, $title, $field, $oldData = "")
