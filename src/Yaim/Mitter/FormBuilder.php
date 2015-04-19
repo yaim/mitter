@@ -182,7 +182,7 @@ class FormBuilder
 						$data = (isset($oldData[$key]))? $oldData[$key] : null;
 
 						$name = $this->nameFixer($name, $repeat, $namePrefix, $num);
-						call_user_func(array($this, $subField['type']), $name, $subField['title'], $subField, $data, $model);
+						call_user_func(array($this, $subField['type']), $name, @$subField['title'], $subField, $data, $model);
 						continue;
 					}
 
@@ -213,7 +213,7 @@ class FormBuilder
 				}
 
 				$name = $this->nameFixer($name, $repeat, $namePrefix, $num);
-				call_user_func(array($this, $subField['type']), $name, $subField['title'], $subField, $data, $model);
+				call_user_func(array($this, $subField['type']), $name, @$subField['title'], $subField, $data, $model);
 			}
 		} else {
 			$name = $this->nameFixer($name, $repeat, null, $num);
@@ -325,7 +325,26 @@ class FormBuilder
 				<a class='btn btn-sm btn-info disabled'><i class='fa fa-external-link'></i></a>
 			</div>";
 		}
+	}
 
+	public function hidden($name, $title = null, $field, $oldData = null)
+	{
+		extract($field);
+
+		if(is_array($oldData)) {
+			if(isset($oldData['id'])) {
+				$relationName = explode('[',$name)[0];
+				$relationEditLink = $this->getSelfModel()->$relationName->find($oldData['id'])->getEditUrl();
+			}
+
+			$nameField = (isset($field['name_field']))? $field['name_field'] : 'name';
+			$oldData = (isset($oldData[$nameField]))? $oldData[$nameField] : '';
+		}
+
+		$this->html .="
+		<div class='hidden'>
+			<input value='$oldData' type='hidden' placeholder='$title'>
+		</div>";
 	}
 
 	public function dateTime($name, $title, $field, $oldData = null)
@@ -510,7 +529,7 @@ class FormBuilder
 		</div>";
 	}
 
-	public function ajaxGuess($name, $title, $field, $oldData = null, $model = null)
+	public function ajaxGuess($name, $title, $field, $oldData = null, $model = null, $createNew = false)
 	{
 		$default = "";
 
@@ -555,10 +574,16 @@ class FormBuilder
 					$conditional = "data-conditional";
 			}
 		*/
+	
+		$extraAttributes = "data-autoGuessAjax data-api='$api'";
+
+		if($createNew) {
+			$extraAttributes .= " data-createAutoGuessAjax";
+		}
 
 		$this->html .="
 		<div class='col-sm-$width col-xs-11'>
-			<input type='hidden' data-old='$default' class='form-horizontal row-border form-control' name='$name' id='$name' data-autoGuessAjax data-api='$api' data-placeholder='$title' placeholder='$title'>
+			<input type='hidden' data-old='$default' class='form-horizontal row-border form-control' name='$name' id='$name' $extraAttributes data-placeholder='$title' placeholder='$title'>
 		</div>";
 
 		if(isset($relationEditLink) && !empty(@$relationEditLink)) {
@@ -572,6 +597,12 @@ class FormBuilder
 				<a class='btn btn-sm btn-info disabled'><i class='fa fa-external-link'></i></a>
 			</div>";
 		}
+	}
+
+	public function createAjaxGuess($name, $title, $field, $oldData = null, $model = null)
+	{
+		// dd($name);
+		$this->ajaxGuess($name, $title, $field, $oldData, $model, $createNew = true);
 	}
 
 	public function divider($title)

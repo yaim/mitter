@@ -102,7 +102,12 @@ class BaseController extends Controller {
 	 */
 	public function create()
 	{
-		return View::make('users.researcher.model.model-create')->with('structure', $this->structure);
+		$apiController = new \ApiController;
+
+		$html = new FormBuilder($this->structure, $apiController);
+		$form = $html->get();
+
+		return View::make('users.researcher.model.model-create')->with('form', $form);
 	}
 
 
@@ -164,7 +169,11 @@ class BaseController extends Controller {
 		if(!isset($modelData))
 			return Response::view('errors.missing', array(), 404);
 
-		return View::make('users.researcher.model.model-create')->with(array('structure' => $this->structure, 'old_data' => $modelData, 'id' => (int)$id));
+		$apiController = new \ApiController;
+		$html = new FormBuilder($this->structure, $apiController, $modelData, $id);
+		$form = $html->get();
+
+		return View::make('users.researcher.model.model-create')->with('form', $form);
 	}
 
 

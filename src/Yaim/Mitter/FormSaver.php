@@ -14,6 +14,7 @@ class FormSaver
 	public function __construct($structure, $inputs, $node_model = false)
 	{
 		$inputs = deepArrayFilter($inputs);
+		dd($inputs);
 		
 		$this->node_model = $node_model;
 		$this->structure = $structure;
