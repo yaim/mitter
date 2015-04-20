@@ -9,16 +9,10 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Redirect;
 
 class BaseController extends Controller {
-	protected $node_model;
-
-	public function __construct($structure = array(), $node_model = false)
-	{
-		if (!empty($structure)) {
-			$this->structure = $structure;
-		}
-
-		$this->node_model = $node_model;
-	}
+	protected $structure;
+	protected $nodeModel;
+	protected $apiController;
+	protected $view;
 
 	public function getStructure()
 	{
@@ -89,7 +83,7 @@ class BaseController extends Controller {
 			}
 		}
 
-		return View::make('users.researcher.model.models')->with(array('rows' => $rows, 'search' => $search, 'structure' => $structure));
+		return View::make($this->view['index'])->with(array('rows' => $rows, 'search' => $search, 'structure' => $structure));
 	}
 
 
@@ -100,12 +94,10 @@ class BaseController extends Controller {
 	 */
 	public function create()
 	{
-		$apiController = new \ApiController;
-
-		$html = new FormBuilder($this->structure, $apiController);
+		$html = new FormBuilder($this->structure, $this->apiController);
 		$form = $html->get();
 
-		return View::make('users.researcher.model.model-create')->with('form', $form);
+		return View::make($this->view['create'])->with('form', $form);
 	}
 
 
@@ -116,7 +108,7 @@ class BaseController extends Controller {
 	 */
 	public function store()
 	{
-		$model = new FormSaver($this->structure, Input::all(), $this->node_model);
+		$model = new FormSaver($this->structure, Input::all(), $this->nodeModel);
 		$id = $model->getModel()->id;
 
 		$url = URL::action($this->structure['controller']."@edit", ['id' => $id]);
@@ -166,11 +158,10 @@ class BaseController extends Controller {
 			return Response::view('errors.missing', array(), 404);
 		}
 
-		$apiController = new \ApiController;
-		$html = new FormBuilder($this->structure, $apiController, $modelData, $id);
+		$html = new FormBuilder($this->structure, $this->apiController, $modelData, $id);
 		$form = $html->get();
 
-		return View::make('users.researcher.model.model-create')->with('form', $form);
+		return View::make($this->view['create'])->with('form', $form);
 	}
 
 
@@ -182,7 +173,7 @@ class BaseController extends Controller {
 	 */
 	public function update($id)
 	{
-		new FormSaver($this->structure, Input::all(), $this->node_model);
+		new FormSaver($this->structure, Input::all(), $this->nodeModel);
 		return Redirect::back();
 	}
 

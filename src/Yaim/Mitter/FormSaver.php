@@ -9,25 +9,25 @@ class FormSaver
 	protected $structure;
 	protected $inputs;
 	protected $model;
-	protected $node_model;
+	protected $nodeModel;
 
-	public function __construct($structure, $inputs, $node_model = false)
+	public function __construct($structure, $inputs, $nodeModel = false)
 	{
 		$inputs = deepArrayFilter($inputs);
 		
-		$this->node_model = $node_model;
+		$this->nodeModel = $nodeModel;
 		$this->structure = $structure;
 		$this->inputs = $inputs;
 		$this->arrayToJson();
 
-		if(!isset($this->inputs['id']) && !$node_model) {
+		if(!isset($this->inputs['id']) && !$nodeModel) {
 			$this->model = new $structure['model'];
 			$this->model->save();
 			$id = $this->model->id;
 		} else {
-			if ($node_model) {
-				if (isset($node_model->id)) {
-					$id = $node_model->id;
+			if ($nodeModel) {
+				if (isset($nodeModel->id)) {
+					$id = $nodeModel->id;
 				} else {
 					die('Saved node model does not have an id!');
 				}
