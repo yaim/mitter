@@ -28,7 +28,7 @@ class BaseController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 *
-	 * @return Response
+	 * @return View
 	 */
 	public function index()
 	{
@@ -96,7 +96,7 @@ class BaseController extends Controller {
 	/**
 	 * Show the form for creating a new resource.
 	 *
-	 * @return Response
+	 * @return View
 	 */
 	public function create()
 	{
@@ -112,7 +112,7 @@ class BaseController extends Controller {
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @return Response
+	 * @return Redirect
 	 */
 	public function store()
 	{
@@ -129,7 +129,7 @@ class BaseController extends Controller {
 	 * Display the specified resource.
 	 *
 	 * @param  int  $id
-	 * @return Response
+	 * @return Redirect
 	 */
 	public function show($id)
 	{
@@ -142,7 +142,7 @@ class BaseController extends Controller {
 	 * Show the form for editing the specified resource.
 	 *
 	 * @param  int  $id
-	 * @return Response
+	 * @return View
 	 */
 	public function edit($id)
 	{
@@ -178,7 +178,7 @@ class BaseController extends Controller {
 	 * Update the specified resource in storage.
 	 *
 	 * @param  int  $id
-	 * @return Response
+	 * @return Redirect
 	 */
 	public function update($id)
 	{
@@ -191,7 +191,7 @@ class BaseController extends Controller {
 	 * Remove the specified resource from storage.
 	 *
 	 * @param  int  $id
-	 * @return Response
+	 * @return Redirect
 	 */
 	public function destroy($id)
 	{
