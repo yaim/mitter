@@ -62,8 +62,7 @@ class BaseController extends Controller {
 
 			if(isset($relations)) {
 				$models = call_user_func(array($structure['model'], 'with'), $relations)->where('name', 'LIKE', "%$search%")->get();
-			}
-			else {
+			} else {
 				$models = call_user_func(array($structure['model'], 'where'), 'name', 'LIKE', "%$search%")->get();
 			}
 
