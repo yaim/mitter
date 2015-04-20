@@ -13,8 +13,7 @@ class BaseController extends Controller {
 
 	public function __construct($structure = array(), $node_model = false)
 	{
-		if (!empty($structure))
-		{
+		if (!empty($structure)) {
 			$this->structure = $structure;
 		}
 
@@ -150,14 +149,12 @@ class BaseController extends Controller {
 	{
 		$relations = array();
 
-		if (isset($this->structure['relations']))
-		{
-			foreach ($this->structure['relations'] as $key => $value)
-			{
-				if (isset($value['type']))
-				{
-					if ($value['type'] == 'divider')
+		if (isset($this->structure['relations'])) {
+			foreach ($this->structure['relations'] as $key => $value) {
+				if (isset($value['type'])) {
+					if ($value['type'] == 'divider') {
 						continue;
+					}
 				} 
 				$relations[] = $key;
 			}
@@ -166,8 +163,9 @@ class BaseController extends Controller {
 		$model = call_user_func(array($this->structure['model'], 'withTrashed'))->with($relations)->find($id);
 		$modelData = (isset($model))? $modelData = array_filter($model->toArray(), 'nullFilter') : null;
 		// $modelData = array_filter(call_user_func(array($this->structure['model'], 'withTrashed'))->with($relations)->find($id)->toArray());
-		if(!isset($modelData))
+		if(!isset($modelData)) {
 			return Response::view('errors.missing', array(), 404);
+		}
 
 		$apiController = new \ApiController;
 		$html = new FormBuilder($this->structure, $apiController, $modelData, $id);
