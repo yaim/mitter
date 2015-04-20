@@ -14,7 +14,6 @@ class FormSaver
 	public function __construct($structure, $inputs, $node_model = false)
 	{
 		$inputs = deepArrayFilter($inputs);
-		dd($inputs);
 		
 		$this->node_model = $node_model;
 		$this->structure = $structure;
@@ -157,6 +156,10 @@ class FormSaver
 					$id = $input['id'];
 					unset($input['id']);
 					$data[$id] = $input;
+
+					if($relation_type == 'HasMany') {
+						$data[$id]['id'] = $id;
+					}
 				} else {
 					$data[] = $input;
 				}
@@ -219,9 +222,9 @@ class FormSaver
 
 	public function MorphMany($name, $data)
 	{
-		$old_models = call_user_func(array($this->model, $name))->get();
+		$oldModels = call_user_func(array($this->model, $name))->get();
 
-		foreach ($old_models as $model) {
+		foreach ($oldModels as $model) {
 			$model->delete();
 		}
 
@@ -271,38 +274,56 @@ class FormSaver
 	public function HasMany($name, $data)
 	{
 		$model = $this->getRelatedModel($name);
-		$relations = array();
+		// $newRelations = array();
+		$newRelations = new \Illuminate\Database\Eloquent\Collection;
+		$createKey = findNestedArrayKey($this->structure['relations'][$name], 'create');
 
 		foreach ($data as $item) {
 			if(is_array($item)) {
 				$item = array_filter($item);
 
-				if(!empty($item)) {
-					$relation = new $model;
+				if(isset($item['id'])) {
+					// @Bug: new model createKey cannot be a number! It would be misunderstood as an ID. At least one non-numeric character is needed.
+					if(($item['id'] == preg_replace('/[^0-9]/', '', $item['id']))) {
+						$relation = $model::find((int)$item['id']);
+					} else {
+						$relation = new $model;
+						$relation->$createKey = $item['id'];
+					}
+
+					unset($item['id']);
 
 					foreach ($item as $key => $value) {
-						if(strlen($value) > 0)
+						if(strlen($value) > 0) {
 							$relation->$key = $value;
-						else unset($relation->$key);
+						} else {
+							unset($relation->$key);
+						}
 					}
 				}
 			} else {
-				$relation = $model::find((int)$item);
+				if(($item == preg_replace('/[^0-9]/', '', $item))) {
+					$relation = $model::find((int)$item);
+				} elseif($createKey) {
+					$relation = new $model;
+					$relation->$createKey = $item;
+				}
 			}
 
 			if(isset($relation)) {
-				$relations[] = $relation;
+				$newRelations->add($relation);
 			}
 		}
 
-		$old_models = call_user_func(array($this->model, $name))->get();
+		$allRelations = call_user_func(array($this->model, $name))->get();
+		$oldRelations = $allRelations->diff($newRelations);
 
-		foreach ($old_models as $old_model) {
-			$old_model->delete();
+		foreach ($oldRelations as $oldRelation) {
+			$oldRelation->delete();
 		}
 
-		if (isset($relations[0])) {
-			call_user_func(array($this->model, $name))->saveMany($relations);
+		if (isset($newRelations[0])) {
+			call_user_func(array($this->model, $name))->saveMany($newRelations->all());
 		}
 	}
 
