@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Redirect;
 
 class BaseController extends Controller {
+
 	protected $structure;
 	protected $nodeModel;
 	protected $apiController;
