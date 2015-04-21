@@ -66,7 +66,7 @@ class FormBuilder
 		$this->html .='
 			</div>';
 
-		$this->html .= \Form::open(['action' => "".$structure['controller']."@store", 'parsley-validate', 'novalidate']);
+		$this->html .= \Form::open(['action' => "\\".$structure['controller']."@store", 'parsley-validate', 'novalidate']);
 
 		if (isset($this->id)) {
 			$this->html .="<input type='hidden' name='id' value='$this->id'>";
