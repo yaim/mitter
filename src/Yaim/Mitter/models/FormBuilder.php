@@ -36,7 +36,7 @@ class FormBuilder
 		$structure = $this->structure;
 
 		$this->html ='
-			<div class="row">
+			<div class="row miiter">
 				<div class="col-xs-6">
 					<h2>'.$structure['title'].'</h2>
 				</div>';
