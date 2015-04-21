@@ -27,7 +27,7 @@ class IndexBuilder {
 		$create_url = action($structure['controller'].'@create');
 
 		$this->html ='
-			<div class="row mitter">
+			<div class="row">
 				<div class="col-md-12">
 					<h2>'.$structure['title'].'</h2>
 				</div><!--/col-md-12-->
@@ -47,7 +47,7 @@ class IndexBuilder {
 				</div><!--/col-md-12-->
 			</div><!--/row-->
 
-			<div class="row">
+			<div class="row mitter">
 				<div class="col-md-12">
 					<div class="block-web">
 					<div class="header">

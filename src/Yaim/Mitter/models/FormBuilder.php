@@ -36,7 +36,7 @@ class FormBuilder
 		$structure = $this->structure;
 
 		$this->html ='
-			<div class="row miiter">
+			<div class="row">
 				<div class="col-xs-6">
 					<h2>'.$structure['title'].'</h2>
 				</div>';
@@ -66,14 +66,14 @@ class FormBuilder
 		$this->html .='
 			</div>';
 
-		$this->html .= \Form::open(['action' => "\\".$structure['controller']."@store", 'parsley-validate', 'novalidate']);
+		$this->html .= \Form::open(['action' => "".$structure['controller']."@store", 'parsley-validate', 'novalidate']);
 
 		if (isset($this->id)) {
 			$this->html .="<input type='hidden' name='id' value='$this->id'>";
 		}
 
 		$this->html .='
-				<div class="row">
+				<div class="row mitter">
 					<div class="col-sm-12 col-md-12">
 						<div class="row">
 							<h3 class="col-xs-6">'.$formTitle.'</h3>
