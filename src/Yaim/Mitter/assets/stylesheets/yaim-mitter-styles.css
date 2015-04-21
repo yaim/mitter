@@ -1,0 +1,29 @@
+/*
+.form-control.select2-container {
+	padding: 13px;
+	padding-top: 7px;
+}
+*/
+.ui-autocomplete {
+	z-index: 10;
+	width: 243px;
+}
+.select2-container-multi {
+	padding: 13px !important;
+	padding-top: 7px !important;
+	margin-bottom: 10px !important;
+}
+.form-control, .select2-container{
+	margin-bottom: 10px !important;
+}
+.row-remove-key {
+	cursor: pointer;
+	color: red;
+	position: absolute;
+	left: 0px;
+	top: 7px;
+	font-family: FontAwesome;
+}
+.bootstrap-timepicker table td input {
+	width: 45px !important;
+}
