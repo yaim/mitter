@@ -2,8 +2,6 @@
 
 namespace Yaim\Mitter;
 
-use Illuminate\Support\Facades\Form;
-
 class FormBuilder
 {
 	protected $structure;
@@ -44,21 +42,21 @@ class FormBuilder
 				</div>';
 
 		if ($this->isDeleted) {
-			$this->html .= Form::open(['action' => [$structure['controller']."@store", $this->id]]);
+			$this->html .= \Form::open(['action' => [$structure['controller']."@store", $this->id]]);
 			$this->html .='
 					<div class="col-xs-6">
 						<input type="submit" class="btn btn-info pull-right" value="Restore Item">
 					</div>';
-			$this->html .= Form::close();
+			$this->html .= \Form::close();
 
 			$formTitle = 'Deleted '.$structure['title'];
 		} elseif (isset($this->id)) {
-			$this->html .= Form::open(['action' => [$structure['controller']."@destroy", $this->id], 'method' => 'delete']);
+			$this->html .= \Form::open(['action' => [$structure['controller']."@destroy", $this->id], 'method' => 'delete']);
 			$this->html .='
 					<div class="col-xs-6">
 						<input type="submit" class="btn btn-danger pull-right" onclick="return confirm(`Deleting this item means other models\'s relations to this item, wouldn\'t work anymore! Are you sure you want to delete this?`); return false;" value="Delete Item">
 					</div>';
-			$this->html .= Form::close();
+			$this->html .= \Form::close();
 
 			$formTitle = 'Edit '.$structure['title'];
 		} else {
@@ -68,7 +66,7 @@ class FormBuilder
 		$this->html .='
 			</div>';
 
-		$this->html .= Form::open(['action' => $structure['controller']."@store", 'parsley-validate', 'novalidate']);
+		$this->html .= \Form::open(['action' => $structure['controller']."@store", 'parsley-validate', 'novalidate']);
 
 		if (isset($this->id)) {
 			$this->html .="<input type='hidden' name='id' value='$this->id'>";
@@ -141,13 +139,13 @@ class FormBuilder
 			</div>
 		</div>';
 
-		$this->html .= Form::submit("Submit ".$structure['title'], array('class' => 'btn btn-primary'));
+		$this->html .= \Form::submit("Submit ".$structure['title'], array('class' => 'btn btn-primary'));
 
 		if(isset($structure['links'])) {
 			$this->html .= $structure['links'];
 		}
 
-		$this->html .= Form::close();
+		$this->html .= \Form::close();
 	}
 
 	public function rowPrefix($title, $name, $repeat = false)
