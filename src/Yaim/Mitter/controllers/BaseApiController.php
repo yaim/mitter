@@ -51,10 +51,9 @@ abstract class BaseApiController extends Controller {
 
 		if(!isset($route[$model])) {
 			return Response::json(array("error"=>"Model for $model not found!"),404);
-		} elseif(method_exists('ApiController', $methodName)) {
-			$model = camel_case($model);
+		} elseif(method_exists($this, $methodName)) {
 			$term = (isset($_REQUEST['term']))? urldecode($_REQUEST['term']) : null;
-			return $this->$model($term);
+			return $this->$methodName($term);
 		} else {
 			$term = (isset($_REQUEST['term']))? urldecode($_REQUEST['term']) : null;
 
