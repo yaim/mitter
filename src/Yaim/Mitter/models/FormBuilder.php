@@ -12,7 +12,9 @@ class FormBuilder
 
 	public function __construct($structure, $apiController = null, $oldData = null, $id = null )
 	{
-		if(method_exists('\URL', 'setRootControllerNamespace')) {
+		// @todo: find a way to get rid of this dummy hack fix
+		$laravel = app();
+		if (0 === strpos($laravel::VERSION, '5.')) {
 			\URL::setRootControllerNamespace('');
 		}
 
