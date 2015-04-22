@@ -1,16 +1,19 @@
-.ui-autocomplete {
+.mitter .ui-autocomplete {
 	z-index: 10;
 	width: 243px;
 }
-.select2-container-multi {
+.mitter .select2-container-multi {
 	padding: 13px !important;
 	padding-top: 7px !important;
 	margin-bottom: 10px !important;
 }
-.form-control, .select2-container{
+.mitter .form-control, .mitter .select2-container{
 	margin-bottom: 10px !important;
 }
-.row-remove-key {
+.mitter .select2-container{
+	width: 100% !important;
+}
+.mitter .row-remove-key {
 	cursor: pointer;
 	color: red;
 	position: absolute;
@@ -18,6 +21,6 @@
 	top: 7px;
 	font-family: FontAwesome;
 }
-.bootstrap-timepicker table td input {
+.mitter .bootstrap-timepicker table td input {
 	width: 45px !important;
 }
