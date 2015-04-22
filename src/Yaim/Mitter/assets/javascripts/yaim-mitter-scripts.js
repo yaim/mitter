@@ -138,7 +138,7 @@ function autoGuessAjax(field, minLength, allowClear)
 {
 	if(typeof(field) ==='undefined') return false;
 
-	url = "/api/"+field.data('api');
+	url = field.data('api');
 	id = field.data('old-id');
 	text = field.data('old-text');
 	placeholder = field.data('placeholder');

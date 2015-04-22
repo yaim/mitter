@@ -526,6 +526,7 @@ class FormBuilder
 		}
 
 		$width = (!isset($width))? 12 : $width;
+		$api = $this->structure['apiPrefix'].$api;
 
 		$this->html .="
 		<div class='col-sm-$width'>
@@ -578,7 +579,8 @@ class FormBuilder
 					$conditional = "data-conditional";
 			}
 		*/
-	
+
+		$api = $this->structure['apiPrefix'].$api;
 		$extraAttributes = "data-autoGuessAjax data-api='$api'";
 
 		if($createNew) {
