@@ -13,15 +13,13 @@ abstract class BaseApiController extends Controller {
 	{
 		$route = $this->route;
 
-		if(strpos($model, "&"))
-		{
+		if(strpos($model, "&")) {
 			$models = explode("&", $model);
 			$arrays = array();
 
 			$results = array('totals' => 0, 'results' => array());
 
-			foreach ($models as $model)
-			{
+			foreach ($models as $model) {
 				$response = $this->index($model);
 				if ($response->getStatusCode() == 404) {
 					return $response->getData()->message;
@@ -30,10 +28,10 @@ abstract class BaseApiController extends Controller {
 				$arrays[] = $response->getData();
 			}
 
-			foreach ($arrays as $array)
-			{
-				if (!is_object($array))
+			foreach ($arrays as $array) {
+				if (!is_object($array)) {
 					continue;
+				}
 
 				$array->totals = (isset($array->totals))? $array->totals : 0;
 
@@ -45,41 +43,36 @@ abstract class BaseApiController extends Controller {
 		}
 
 
-		if (!isset($model))
+		if (!isset($model)) {
 			return Response::json(array("message"=>"This is the Application Programming Interface (API) for Mitter."),200);
+		}
 
 		$methodName = str_singular(camel_case($model));
 
-		if(!isset($route[$model]))
+		if(!isset($route[$model])) {
 			return Response::json(array("error"=>"Model for $model not found!"),404);
-		elseif(method_exists('ApiController', $methodName))
-		{
+		} elseif(method_exists('ApiController', $methodName)) {
 			$model = camel_case($model);
 			$term = (isset($_REQUEST['term']))? urldecode($_REQUEST['term']) : null;
 			return $this->$model($term);
-		}
-		else
-		{
+		} else {
 			$term = (isset($_REQUEST['term']))? urldecode($_REQUEST['term']) : null;
 
-			if ($parent)
-			{
+			if ($parent) {
 				$parent = call_user_func( array($route[$model],'where'), 'name', '=', $parent)->first();
 				return $children = $parent->getDescendants()->toArray();
 
-				if(isset($term))
+				if(isset($term)) {
 					dd(array_search($term, $children));
-				else
+				} else {
 					return $children;
+				}
 			}
 
-			if(isset($term_id))
-			{
+			if(isset($term_id)) {
 				$temp_model = $route[$model]::find($term_id);
 				$queries[][$temp_model->name] = $temp_model->id;
-			}
-			else
-			{
+			} else {
 				$queries = call_user_func( array($route[$model],'where'), 'name', 'like', "%$term%");
 				$queries = $queries->select('id', 'name')->get()->toArray();
 			}
