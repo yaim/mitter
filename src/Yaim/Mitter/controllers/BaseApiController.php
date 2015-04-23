@@ -1,5 +1,7 @@
 <?php namespace Yaim\Mitter;
 
+use Illuminate\Routing\Controller;
+
 abstract class BaseApiController extends \Controller {
 
 	protected $route;
