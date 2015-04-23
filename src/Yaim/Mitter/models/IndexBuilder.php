@@ -2,8 +2,6 @@
 
 namespace Yaim\Mitter;
 
-use Illuminate\Support\Facades\Form;
-
 class IndexBuilder {
 	protected $structure;
 	protected $html;
@@ -11,6 +9,12 @@ class IndexBuilder {
 
 	public function __construct($structure, $rows, $search_term)
 	{
+		// @todo: find a way to get rid of this dummy hack fix
+		$laravel = app();
+		if (0 === strpos($laravel::VERSION, '5.')) {
+			\URL::setRootControllerNamespace('');
+		}
+
 		$this->structure = $structure;
 		$this->rows = $rows;
 
@@ -37,10 +41,10 @@ class IndexBuilder {
 				<div class="col-md-12">
 					<div class="block-web col-md-12">';
 						
-		$this->html .= Form::open(array('method' => 'get'));
-		$this->html .= '<div class="col-md-10">'.Form::text('search', $search_term, array('required', 'class' => 'form-control parsley-validated', 'required', 'parsley-min'=>'1', 'placeholder' => 'Search In Items' )).'</div>';
-		$this->html .= '<div class="col-md-2">'.Form::submit('Search', array('class' => 'control-label btn btn-primary')).'</div>';
-		$this->html .= Form::close();
+		$this->html .= \Form::open(array('method' => 'get'));
+		$this->html .= '<div class="col-md-10">'.\Form::text('search', $search_term, array('required', 'class' => 'form-control parsley-validated', 'required', 'parsley-min'=>'1', 'placeholder' => 'Search In Items' )).'</div>';
+		$this->html .= '<div class="col-md-2">'.\Form::submit('Search', array('class' => 'control-label btn btn-primary')).'</div>';
+		$this->html .= \Form::close();
 
 		$this->html .='
 					</div>
