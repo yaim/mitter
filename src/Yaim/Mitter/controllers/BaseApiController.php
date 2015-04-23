@@ -52,10 +52,10 @@ abstract class BaseApiController extends Controller {
 		if(!isset($route[$model])) {
 			return Response::json(array("error"=>"Model for $model not found!"),404);
 		} elseif(method_exists($this, $methodName)) {
-			$term = (isset($_REQUEST['term']))? urldecode($_REQUEST['term']) : null;
+			$term = (isset($_REQUEST['q']))? urldecode($_REQUEST['q']) : null;
 			return $this->$methodName($term);
 		} else {
-			$term = (isset($_REQUEST['term']))? urldecode($_REQUEST['term']) : null;
+			$term = (isset($_REQUEST['q']))? urldecode($_REQUEST['q']) : null;
 
 			if ($parent) {
 				$parent = call_user_func( array($route[$model],'where'), 'name', '=', $parent)->first();
@@ -73,7 +73,7 @@ abstract class BaseApiController extends Controller {
 				$queries[][$temp_model->name] = $temp_model->id;
 			} else {
 				$queries = call_user_func( array($route[$model],'where'), 'name', 'like', "%$term%");
-				$queries = $queries->select('id', 'name')->get()->toArray();
+				$queries = $queries->select('id', \DB::raw('name AS text'))->get()->toArray();
 			}
 
 			$queries = (isset($queries))? $queries : null;
