@@ -18,8 +18,6 @@ class MitterServiceProvider extends ServiceProvider {
 	*/
 	public function boot()
 	{
-		include __DIR__.'./functions.php';
-
 		$this->publishes([
 			__DIR__.'/assets' => public_path('packages/yaim/mitter'),
 		], 'public');
