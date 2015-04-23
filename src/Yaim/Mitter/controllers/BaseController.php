@@ -4,7 +4,7 @@ include __DIR__.'/../functions.php';
 
 use Illuminate\Routing\Controller;
 
-class BaseController extends \Controller {
+class BaseController extends Controller {
 
 	protected $structure;
 	protected $nodeModel;

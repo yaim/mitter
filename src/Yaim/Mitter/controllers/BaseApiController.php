@@ -2,7 +2,7 @@
 
 use Illuminate\Routing\Controller;
 
-abstract class BaseApiController extends \Controller {
+abstract class BaseApiController extends Controller {
 
 	protected $route;
 
