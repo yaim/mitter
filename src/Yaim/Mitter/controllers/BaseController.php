@@ -1,14 +1,8 @@
-<?php
+<?php namespace Yaim\Mitter;
 
-namespace Yaim\Mitter;
+include __DIR__.'/../functions.php';
 
-use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Redirect;
-
-class BaseController extends Controller {
+class BaseController extends \Controller {
 
 	protected $structure;
 	protected $nodeModel;
@@ -27,7 +21,7 @@ class BaseController extends Controller {
 	 */
 	public function index()
 	{
-		$search = (null !== Input::get('search')) ? Input::get('search') : "";
+		$search = (null !== \Input::get('search')) ? \Input::get('search') : "";
 		$structure = $this->structure;
 		$required = array();
 		$models = array();
@@ -84,7 +78,7 @@ class BaseController extends Controller {
 			}
 		}
 
-		return View::make($this->view['index'])->with(array('rows' => $rows, 'search' => $search, 'structure' => $structure));
+		return \View::make($this->view['index'])->with(array('rows' => $rows, 'search' => $search, 'structure' => $structure));
 	}
 
 
@@ -98,7 +92,7 @@ class BaseController extends Controller {
 		$html = new FormBuilder($this->structure, $this->apiController);
 		$form = $html->get();
 
-		return View::make($this->view['create'])->with('form', $form);
+		return \View::make($this->view['create'])->with('form', $form);
 	}
 
 
@@ -109,11 +103,11 @@ class BaseController extends Controller {
 	 */
 	public function store()
 	{
-		$model = new FormSaver($this->structure, Input::all(), $this->nodeModel);
+		$model = new FormSaver($this->structure, \Input::all(), $this->nodeModel);
 		$id = $model->getModel()->id;
 
-		$url = URL::action($this->structure['controller']."@edit", ['id' => $id]);
-		return Redirect::to($url);
+		$url = \URL::action($this->structure['controller']."@edit", ['id' => $id]);
+		return \Redirect::to($url);
 
 	}
 
@@ -126,8 +120,8 @@ class BaseController extends Controller {
 	 */
 	public function show($id)
 	{
-		$url = URL::action($this->structure['controller']."@edit", ['id' => $id]);
-		return Redirect::to($url);
+		$url = \URL::action($this->structure['controller']."@edit", ['id' => $id]);
+		return \Redirect::to($url);
 	}
 
 
@@ -153,16 +147,16 @@ class BaseController extends Controller {
 		}
 
 		$model = call_user_func(array($this->structure['model'], 'withTrashed'))->with($relations)->find($id);
-		$modelData = (isset($model))? $modelData = array_filter($model->toArray(), 'nullFilter') : null;
+		$modelData = (isset($model))? $modelData = array_filter($model->toArray(), 'mitterNullFilter') : null;
 		// $modelData = array_filter(call_user_func(array($this->structure['model'], 'withTrashed'))->with($relations)->find($id)->toArray());
 		if(!isset($modelData)) {
-			return Response::view('errors.missing', array(), 404);
+			return \Response::view('errors.missing', array(), 404);
 		}
 
 		$html = new FormBuilder($this->structure, $this->apiController, $modelData, $id);
 		$form = $html->get();
 
-		return View::make($this->view['create'])->with('form', $form);
+		return \View::make($this->view['create'])->with('form', $form);
 	}
 
 
@@ -174,8 +168,8 @@ class BaseController extends Controller {
 	 */
 	public function update($id)
 	{
-		new FormSaver($this->structure, Input::all(), $this->nodeModel);
-		return Redirect::back();
+		new FormSaver($this->structure, \Input::all(), $this->nodeModel);
+		return \Redirect::back();
 	}
 
 
@@ -190,9 +184,9 @@ class BaseController extends Controller {
 		$model = call_user_func([$this->structure['model'], 'find'], $id);
 		$model->delete();
 
-		$url = URL::action($this->structure['controller']."@index");
+		$url = \URL::action($this->structure['controller']."@index");
 
-		return Redirect::to($url);
+		return \Redirect::to($url);
 	}
 
 }

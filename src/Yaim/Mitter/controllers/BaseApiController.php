@@ -1,11 +1,6 @@
-<?php
+<?php namespace Yaim\Mitter;
 
-namespace Yaim\Mitter;
-
-use Illuminate\Support\Facades\Response;
-use Illuminate\Routing\Controller;
-
-abstract class BaseApiController extends Controller {
+abstract class BaseApiController extends \Controller {
 
 	protected $route;
 
@@ -39,18 +34,18 @@ abstract class BaseApiController extends Controller {
 				$results['results'] = array_merge($results['results'], $array->results);
 			}
 
-			return Response::json($results,200);
+			return \Response::json($results,200);
 		}
 
 
 		if (!isset($model)) {
-			return Response::json(array("message"=>"This is the Application Programming Interface (API) for Mitter."),200);
+			return \Response::json(array("message"=>"This is the Application Programming Interface (API) for Mitter."),200);
 		}
 
 		$methodName = str_singular(camel_case($model));
 
 		if(!isset($route[$model])) {
-			return Response::json(array("error"=>"Model for $model not found!"),404);
+			return \Response::json(array("error"=>"Model for $model not found!"),404);
 		} elseif(method_exists($this, $methodName)) {
 			$term = (isset($_REQUEST['q']))? urldecode($_REQUEST['q']) : null;
 			return $this->$methodName($term);
@@ -81,7 +76,7 @@ abstract class BaseApiController extends Controller {
 			$results['totals'] = count($queries);
 			$results['results'] = $queries;
 
-			return Response::json($results,200);
+			return \Response::json($results,200);
 		}
 
 	}

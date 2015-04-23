@@ -1,6 +1,4 @@
-<?php
-
-namespace Yaim\Mitter;
+<?php namespace Yaim\Mitter;
 
 class IndexBuilder {
 	protected $structure;

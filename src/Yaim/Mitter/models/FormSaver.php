@@ -1,8 +1,6 @@
-<?php
+<?php namespace Yaim\Mitter;
 
-namespace Yaim\Mitter;
-
-use Illuminate\Support\Facades\Form;
+include __DIR__.'/../functions.php';
 
 class FormSaver
 {
@@ -276,7 +274,7 @@ class FormSaver
 		$model = $this->getRelatedModel($name);
 		// $newRelations = array();
 		$newRelations = new \Illuminate\Database\Eloquent\Collection;
-		$createKey = findNestedArrayKey($this->structure['relations'][$name], 'create');
+		$createKey = mitterFindNestedArrayKey($this->structure['relations'][$name], 'create');
 
 		foreach ($data as $item) {
 			if(is_array($item)) {
