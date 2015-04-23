@@ -530,13 +530,16 @@ class FormBuilder
 
 		$this->html .="
 		<div class='col-sm-$width'>
-			<input type='hidden' data-multiple='true' data-old='$defaults' class='form-horizontal row-border form-control' name='$name' id='$name' data-autoGuessAjax data-api='$api' data-placeholder='$title' placeholder='$title'>
+			<select data-autoGuessAjax data-minimum-input-length='1' data-placeholder='$title' data-allow-clear='true' data-ajax--url='$api' data-ajax--data-type='json' data-ajax--type='GET' data-ajax--quiet-millis='50' multiple='multiple' data-old='$defaults' name='$name' id='$name' data-api='$api' placeholder='$title'>
+			</select>
 		</div>";
 	}
 
 	public function ajaxGuess($name, $title, $field, $oldData = null, $model = null, $createNew = false)
 	{
 		$default = "";
+		$text = "";
+		$id = "";
 
 		if (isset($oldData)) {
 			if(isset($oldData['id'])) {
@@ -556,10 +559,8 @@ class FormBuilder
 				if (isset($relationModel)) {
 					$relationEditLink = $relationModel->getEditUrl();
 
-					$array['id'] = @$relationModel->id;
-					$array['text'] = @$relationModel->name;
-
-					$default = json_encode($array);
+					$id = @$relationModel->id;
+					$text = @$relationModel->name;
 				}
 			}
 		}
@@ -581,7 +582,7 @@ class FormBuilder
 		*/
 
 		$api = $this->structure['apiPrefix'].$api;
-		$extraAttributes = "data-autoGuessAjax data-api='$api'";
+		$extraAttributes = "data-autoGuessAjax";
 
 		if($createNew) {
 			$extraAttributes .= " data-createAutoGuessAjax";
@@ -589,7 +590,9 @@ class FormBuilder
 
 		$this->html .="
 		<div class='col-sm-$width col-xs-11'>
-			<input type='hidden' data-old='$default' class='form-horizontal row-border form-control' name='$name' id='$name' $extraAttributes data-placeholder='$title' placeholder='$title'>
+			<select data-minimum-input-length='1' $extraAttributes data-placeholder='$title' data-allow-clear='true' data-ajax--url='$api' data-ajax--data-type='json' data-ajax--type='GET' data-ajax--quiet-millis='50' name='$name' id='$name'>
+				<option value='$id'>$text</option>
+			</select>
 		</div>";
 
 		if(isset($relationEditLink) && !empty(@$relationEditLink)) {

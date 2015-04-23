@@ -134,105 +134,57 @@ function repeatElement(element)
 	return false;
 }
 
-function autoGuessAjax(field, minLength, allowClear)
+function autoGuessAjax(field)
 {
-	if(typeof(field) ==='undefined') return false;
+	$(field).select2();
+	/*
+		//@todo: recreate createSearchChoice feature after adopting select2 v4
 
-	url = field.data('api');
-	id = field.data('old-id');
-	text = field.data('old-text');
-	placeholder = field.data('placeholder');
-	multiple = field.data('multiple');
-	old = field.data('old');
-
-	if(typeof(url) ==='undefined') return false;
-
-	if(typeof(multiple)==='undefined') multiple = false;
-	if(typeof(minLength)==='undefined') minLength = 1;
-	if(typeof(allowClear)==='undefined') allowClear = true;
-	if(typeof(multiple)==='undefined') multiple = false;
-
-	if(typeof(field.data('createautoguessajax')) !== 'undefined') {
-		var lastResults = [];
-		$(field).select2({
-			minimumInputLength: minLength,
-			placeholder: placeholder,
-			allowClear: allowClear,
-			multiple: multiple,
-			ajax: {
-				url: url,
-				dataType: 'json',
-				type: "GET",
-				quietMillis: 50,
-				data: function (term) {
-					return {
-						term: term
-					};
+		if(typeof(field.data('createautoguessajax')) !== 'undefined') {
+			var lastResults = [];
+			$(field).select2({
+				minimumInputLength: minLength,
+				placeholder: placeholder,
+				allowClear: allowClear,
+				multiple: multiple,
+				ajax: {
+					url: url,
+					dataType: 'json',
+					type: "GET",
+					quietMillis: 50,
+					data: function (term) {
+						return {
+							term: term
+						};
+					},
+					results: function (data) {
+						lastResults = data.results;
+						return {
+							results: $.map(data.results, function (item) {
+								return {
+									text: item.name,
+									id: item.id
+								}
+							})
+						};
+					},
 				},
-				results: function (data) {
-					lastResults = data.results;
-					return {
-						results: $.map(data.results, function (item) {
-							return {
-								text: item.name,
-								id: item.id
-							}
-						})
-					};
-				},
-			},
-			createSearchChoice: function (term) {
-				if(lastResults.some(function(r) { return r.text == term })) {
-					return {
-						id: term,
-						text: term
-					};
-				} else {
-					return {
-						id: term,
-						text: term + " (+)"
-					};
+				createSearchChoice: function (term) {
+					if(lastResults.some(function(r) { return r.text == term })) {
+						return {
+							id: term,
+							text: term
+						};
+					} else {
+						return {
+							id: term,
+							text: term + " (+)"
+						};
+					}
 				}
-			}
-		});
-	} else {
-		$(field).select2({
-			minimumInputLength: minLength,
-			placeholder: placeholder,
-			allowClear: allowClear,
-			multiple: multiple,
-			ajax: {
-				url: url,
-				dataType: 'json',
-				type: "GET",
-				quietMillis: 50,
-				data: function (term) {
-					return {
-						term: term
-					};
-				},
-				results: function (data) {
-					return {
-						results: $.map(data.results, function (item) {
-							return {
-								text: item.name,
-								id: item.id
-							}
-						})
-					};
-				},
-			},
-		});		
-	}
-
-
-	if(typeof(old) !=='undefined') {
-		$(field).select2('data', old );
-	}
-
-	if((typeof(text)!=='undefined') && typeof(id)!=='undefined') {
-		$(field).select2('data', {id: id, text: text});
-	}
+			});
+		}
+	*/
 }
 
 function groupButton(field)
