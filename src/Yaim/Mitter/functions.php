@@ -57,11 +57,11 @@
 	if(!function_exists('mitterDeepArrayFilter')) {
 		function mitterDeepArrayFilter($array)
 		{
-			$array = array_filter($array, 'nullFilter');
+			$array = array_filter($array, 'mitterNullFilter');
 
 			foreach ($array as $key => $item) {
 				if(is_array($item))
-					$array[$key] = deepArrayFilter($item);	
+					$array[$key] = mitterDeepArrayFilter($item);	
 			}
 			return $array;
 		}
