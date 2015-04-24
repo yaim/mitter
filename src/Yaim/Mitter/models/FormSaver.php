@@ -186,17 +186,19 @@ class FormSaver
 		$otherKey = last(explode('.', $this->getOtherKey($name)));
 
 		foreach ($data as $key => $item) {
-			$item = array_filter($item);
-			$data[$key] = $item;
+			if(is_array($item)) {
+				$item = array_filter($item);
+				$data[$key] = $item;
 
-			foreach ($item as $itemKey => $pivot) {
-				if(!(strlen($pivot) > 0)) {
-					unset($data[$key][$itemKey]);
+				foreach ($item as $itemKey => $pivot) {
+					if(!(strlen($pivot) > 0)) {
+						unset($data[$key][$itemKey]);
+					}
 				}
-			}
 
-			if(!(strlen(@$item[$otherKey]) > 0)) {
-				unset($data[$key]);
+				if(!(strlen(@$item[$otherKey]) > 0)) {
+					unset($data[$key]);
+				}
 			}
 		}
 
