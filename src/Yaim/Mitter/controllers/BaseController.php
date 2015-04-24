@@ -117,7 +117,7 @@ class BaseController extends Controller {
 		$model = new FormSaver($this->structure, \Input::all(), $this->nodeModel);
 		$id = $model->getModel()->id;
 
-		$url = \URL::action($this->structure['controller']."@edit", ['id' => $id]);
+		$url = action($this->structure['controller']."@edit", ['id' => $id]);
 		return \Redirect::to($url);
 
 	}
@@ -131,7 +131,7 @@ class BaseController extends Controller {
 	 */
 	public function show($id)
 	{
-		$url = \URL::action($this->structure['controller']."@edit", ['id' => $id]);
+		$url = action($this->structure['controller']."@edit", ['id' => $id]);
 		return \Redirect::to($url);
 	}
 
@@ -195,7 +195,7 @@ class BaseController extends Controller {
 		$model = call_user_func([$this->structure['model'], 'find'], $id);
 		$model->delete();
 
-		$url = \URL::action($this->structure['controller']."@index");
+		$url = action($this->structure['controller']."@index");
 
 		return \Redirect::to($url);
 	}
