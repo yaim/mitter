@@ -20,7 +20,6 @@ class BaseController extends Controller {
 		}
 	}
 
-
 	public function getStructure()
 	{
 		return $this->structure;
