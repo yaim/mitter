@@ -23,4 +23,9 @@ trait BaseModelTrait {
 	{
 		return $controller = get_called_class()."Controller";
 	}
+
+	public function getGuessText()
+	{
+		return $this->name;
+	}
 }

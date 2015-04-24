@@ -558,7 +558,7 @@ class FormBuilder
 					$relationEditLink = $relationModel->getEditUrl();
 
 					$id = @$relationModel->id;
-					$text = @$relationModel->name;
+					$text = @$relationModel->getGuessText();
 				}
 			}
 		}
