@@ -104,7 +104,9 @@ class IndexBuilder {
 				$this->html .= '
 						</tr>';
 			}
-					'</tbody>
+
+			$this->html .= '
+					</tbody>
 				</table>';
 		}
 	}
