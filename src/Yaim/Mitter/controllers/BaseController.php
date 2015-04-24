@@ -114,6 +114,12 @@ class BaseController extends Controller {
 	 */
 	public function store()
 	{
+		// @todo: find a way to get rid of this dummy hack fix
+		$laravel = app();
+		if (0 === strpos($laravel::VERSION, '5.')) {
+			\URL::setRootControllerNamespace('');
+		}
+
 		$model = new FormSaver($this->structure, \Input::all(), $this->nodeModel);
 		$id = $model->getModel()->id;
 
