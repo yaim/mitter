@@ -11,6 +11,16 @@ class BaseController extends Controller {
 	protected $apiController;
 	protected $view;
 
+	public function __construct()
+	{
+		// @todo: find a way to get rid of this dummy hack fix
+		$laravel = app();
+		if (0 === strpos($laravel::VERSION, '5.')) {
+			\URL::setRootControllerNamespace('');
+		}
+	}
+
+
 	public function getStructure()
 	{
 		return $this->structure;
