@@ -137,6 +137,12 @@ class BaseController extends Controller {
 	 */
 	public function show($id)
 	{
+		// @todo: find a way to get rid of this dummy hack fix
+		$laravel = app();
+		if (0 === strpos($laravel::VERSION, '5.')) {
+			\URL::setRootControllerNamespace('');
+		}
+
 		$url = action($this->structure['controller']."@edit", ['id' => $id]);
 		return \Redirect::to($url);
 	}
@@ -198,6 +204,12 @@ class BaseController extends Controller {
 	 */
 	public function destroy($id)
 	{
+		// @todo: find a way to get rid of this dummy hack fix
+		$laravel = app();
+		if (0 === strpos($laravel::VERSION, '5.')) {
+			\URL::setRootControllerNamespace('');
+		}
+
 		$model = call_user_func([$this->structure['model'], 'find'], $id);
 		$model->delete();
 
