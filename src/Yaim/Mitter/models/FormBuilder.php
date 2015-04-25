@@ -515,7 +515,7 @@ class FormBuilder
 				$array[] = array_only($data, array('id', 'name'));
 			}
 
-			foreach ( $array as $k=>$v ) {
+			foreach ($array as $k => $v) {
 				$array[$k]['text'] = $array[$k]['name'];
 				unset($array[$k]['name']);
 			}
@@ -524,7 +524,7 @@ class FormBuilder
 		}
 
 		$width = (!isset($width))? 12 : $width;
-		$api = $this->structure['apiPrefix'].$api;
+		$api = $this->getPreFixedAPI($api);
 
 		$this->html .="
 		<div class='col-sm-$width'>
@@ -579,7 +579,7 @@ class FormBuilder
 			}
 		*/
 
-		$api = $this->structure['apiPrefix'].$api;
+		$api = $this->getPreFixedAPI($api);
 		$extraAttributes = "data-autoGuessAjax";
 
 		if($createNew) {
@@ -621,5 +621,11 @@ class FormBuilder
 	public function getSelfModel()
 	{
 		return call_user_func(array($this->structure['model'], 'find'), $this->id);
+	}
+
+	public function getPreFixedAPI($api)
+	{
+		$prefix = (isset($this->structure['apiPrefix'])) ? $this->structure['apiPrefix'] : '';
+		return $prefix.$api;
 	}
 }
