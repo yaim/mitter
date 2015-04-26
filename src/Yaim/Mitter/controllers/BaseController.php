@@ -34,6 +34,7 @@ class BaseController extends Controller {
 	{
 		$search = (null !== \Input::get('search')) ? \Input::get('search') : "";
 		$structure = $this->structure;
+		$searchableField = isset($structure['searchable_fields'][0])? $structure['searchable_fields'][0] : 'name';
 		$required = array();
 		$models = array();
 		$rows = array();
@@ -61,9 +62,9 @@ class BaseController extends Controller {
 			}
 
 			if(isset($relations)) {
-				$models = call_user_func(array($structure['model'], 'with'), $relations)->where('name', 'LIKE', "%$search%")->get();
+				$models = call_user_func(array($structure['model'], 'with'), $relations)->where($searchableField, 'LIKE', "%$search%")->get();
 			} else {
-				$models = call_user_func(array($structure['model'], 'where'), 'name', 'LIKE', "%$search%")->get();
+				$models = call_user_func(array($structure['model'], 'where'), $searchableField, 'LIKE', "%$search%")->get();
 			}
 
 			$models = $models->toArray();

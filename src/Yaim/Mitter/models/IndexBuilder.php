@@ -5,7 +5,7 @@ class IndexBuilder {
 	protected $html;
 	protected $rows;
 
-	public function __construct($structure, $rows, $search_term)
+	public function __construct($structure, $rows, $searchTerm)
 	{
 		// @todo: find a way to get rid of this dummy hack fix
 		$laravel = app();
@@ -16,14 +16,14 @@ class IndexBuilder {
 		$this->structure = $structure;
 		$this->rows = $rows;
 
-		$this->index_prefix($search_term);
+		$this->index_prefix($searchTerm);
 		$this->index_content($rows);
 		$this->index_postfix();
 
 		return $this->html;
 	}
 
-	public function index_prefix($search_term)
+	public function index_prefix($searchTerm)
 	{
 		$structure = $this->structure;
 		$create_url = action($structure['controller'].'@create');
@@ -41,7 +41,7 @@ class IndexBuilder {
 						
 		$this->html .= \Form::open(array('method' => 'get'));
 		$this->html .= '<div class="row">';
-		$this->html .= '<div class="col-sm-10">'.\Form::text('search', $search_term, array('required', 'class' => 'form-control parsley-validated', 'required', 'parsley-min'=>'1', 'placeholder' => 'Search In Items' )).'</div>';
+		$this->html .= '<div class="col-sm-10">'.\Form::text('search', $searchTerm, array('required', 'class' => 'form-control parsley-validated', 'required', 'parsley-min'=>'1', 'placeholder' => 'Search In Items' )).'</div>';
 		$this->html .= '<div class="col-sm-2">'.\Form::submit('Search', array('class' => 'control-label btn btn-primary')).'</div>';
 		$this->html .= '</div>';
 		$this->html .= \Form::close();
