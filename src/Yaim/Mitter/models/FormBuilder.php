@@ -527,7 +527,7 @@ class FormBuilder
 
 		$this->html .="
 		<div class='col-sm-$width'>
-			<select data-autoGuessAjax data-minimum-input-length='1' data-placeholder='$title' data-allow-clear='true' data-ajax--url='$api' data-ajax--data-type='json' data-ajax--type='GET' data-ajax--quiet-millis='50' multiple='multiple' name='$name' id='$name' data-api='$api' placeholder='$title'>";
+			<select data-selectAjax data-minimum-input-length='1' data-placeholder='$title' data-allow-clear='true' data-ajax--url='$api' data-ajax--data-type='json' data-ajax--type='GET' data-ajax--quiet-millis='50' multiple='multiple' name='$name' id='$name' data-api='$api' placeholder='$title'>";
 
 		foreach ($oldDataArray as $value) {
 			$this->html .='
@@ -586,10 +586,10 @@ class FormBuilder
 		*/
 
 		$api = $this->getPreFixedAPI($api);
-		$extraAttributes = "data-autoGuessAjax";
+		$extraAttributes = "data-selectAjax";
 
 		if($createNew) {
-			$extraAttributes .= " data-createAutoGuessAjax";
+			$extraAttributes .= " data-tags	='true'";
 		}
 
 		$this->html .="

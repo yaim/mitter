@@ -3,9 +3,7 @@ $(document).ready(function(){
 		alert($(this).prev("select"));
 	});
 
-	$("*[data-autoGuessAjax]").each(function(){
-		autoGuessAjax($(this));
-	});
+	$("*[data-selectAjax]").select2();
 
 	$("*[data-dateTimePicker]").each(function(){
 		if (!$(this).val()) {
@@ -119,9 +117,7 @@ function repeatElement(element)
 	append.find('.not-in-repeat').remove();
 	append.find('.link-to-relation').attr('href', '').addClass('disabled').removeClass('link-to-relation');
 
-	append.find("[data-autoGuessAjax]").each(function(){
-		autoGuessAjax($(this));
-	});
+	append.find("[data-selectAjax]").select2();
 
 	element.after(append);
 
@@ -132,59 +128,6 @@ function repeatElement(element)
 	});
 
 	return false;
-}
-
-function autoGuessAjax(field)
-{
-	$(field).select2();
-	/*
-		//@todo: recreate createSearchChoice feature after adopting select2 v4
-
-		if(typeof(field.data('createautoguessajax')) !== 'undefined') {
-			var lastResults = [];
-			$(field).select2({
-				minimumInputLength: minLength,
-				placeholder: placeholder,
-				allowClear: allowClear,
-				multiple: multiple,
-				ajax: {
-					url: url,
-					dataType: 'json',
-					type: "GET",
-					quietMillis: 50,
-					data: function (term) {
-						return {
-							term: term
-						};
-					},
-					results: function (data) {
-						lastResults = data.results;
-						return {
-							results: $.map(data.results, function (item) {
-								return {
-									text: item.name,
-									id: item.id
-								}
-							})
-						};
-					},
-				},
-				createSearchChoice: function (term) {
-					if(lastResults.some(function(r) { return r.text == term })) {
-						return {
-							id: term,
-							text: term
-						};
-					} else {
-						return {
-							id: term,
-							text: term + " (+)"
-						};
-					}
-				}
-			});
-		}
-	*/
 }
 
 function groupButton(field)
