@@ -509,6 +509,7 @@ class FormBuilder
 	{
 		extract($field);
 		$defaults = '';
+		$name .= '[]';
 
 		if (isset($oldData)) {
 			foreach ($oldData as $data) {
