@@ -508,20 +508,18 @@ class FormBuilder
 	public function ajaxTag($name, $title, $field, $oldData = null)
 	{
 		extract($field);
-		$defaults = '';
+		$oldDataArray = [];
 		$name .= '[]';
 
 		if (isset($oldData)) {
 			foreach ($oldData as $data) {
-				$array[] = array_only($data, array('id', 'name'));
+				$oldDataArray[] = array_only($data, array('id', 'name'));
 			}
 
-			foreach ($array as $k => $v) {
-				$array[$k]['text'] = $array[$k]['name'];
-				unset($array[$k]['name']);
+			foreach ($oldDataArray as $k => $v) {
+				$oldDataArray[$k]['text'] = $oldDataArray[$k]['name'];
+				unset($oldDataArray[$k]['name']);
 			}
-
-			$defaults = json_encode($array);
 		}
 
 		$width = (!isset($width))? 12 : $width;
@@ -529,7 +527,14 @@ class FormBuilder
 
 		$this->html .="
 		<div class='col-sm-$width'>
-			<select data-autoGuessAjax data-minimum-input-length='1' data-placeholder='$title' data-allow-clear='true' data-ajax--url='$api' data-ajax--data-type='json' data-ajax--type='GET' data-ajax--quiet-millis='50' multiple='multiple' data-old='$defaults' name='$name' id='$name' data-api='$api' placeholder='$title'>
+			<select data-autoGuessAjax data-minimum-input-length='1' data-placeholder='$title' data-allow-clear='true' data-ajax--url='$api' data-ajax--data-type='json' data-ajax--type='GET' data-ajax--quiet-millis='50' multiple='multiple' name='$name' id='$name' data-api='$api' placeholder='$title'>";
+
+		foreach ($oldDataArray as $value) {
+			$this->html .='
+				<option selected="selected" value="'.$value['id'].'">'.$value['text'].'</option>';
+		}
+
+		$this->html .="
 			</select>
 		</div>";
 	}
