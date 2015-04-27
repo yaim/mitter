@@ -505,7 +505,7 @@ class FormBuilder
 			</div>";
 	}
 
-	public function ajaxTag($name, $title, $field, $oldData = null)
+	public function ajaxTag($name, $title, $field, $oldData = null, $createNew = false)
 	{
 		extract($field);
 		$oldDataArray = [];
@@ -524,10 +524,15 @@ class FormBuilder
 
 		$width = (!isset($width))? 12 : $width;
 		$api = $this->getPreFixedAPI($api);
+		$attributes = "data-selectAjax";
+
+		if($createNew) {
+			$attributes .= " data-tags	='true'";
+		}
 
 		$this->html .="
 		<div class='col-sm-$width'>
-			<select data-selectAjax data-minimum-input-length='1' data-placeholder='$title' data-allow-clear='true' data-ajax--url='$api' data-ajax--data-type='json' data-ajax--type='GET' data-ajax--quiet-millis='50' multiple='multiple' name='$name' id='$name' data-api='$api' placeholder='$title'>";
+			<select $attributes data-minimum-input-length='1' data-placeholder='$title' data-allow-clear='true' data-ajax--url='$api' data-ajax--data-type='json' data-ajax--type='GET' data-ajax--quiet-millis='50' multiple='multiple' name='$name' id='$name' data-api='$api' placeholder='$title'>";
 
 		foreach ($oldDataArray as $value) {
 			$this->html .='
@@ -537,6 +542,11 @@ class FormBuilder
 		$this->html .="
 			</select>
 		</div>";
+	}
+
+	public function createAjaxTag($name, $title, $field, $oldData = null)
+	{
+		$this->ajaxTag($name, $title, $field, $oldData, $createNew = true);
 	}
 
 	public function ajaxGuess($name, $title, $field, $oldData = null, $model = null, $createNew = false)
@@ -586,15 +596,15 @@ class FormBuilder
 		*/
 
 		$api = $this->getPreFixedAPI($api);
-		$extraAttributes = "data-selectAjax";
+		$attributes = "data-selectAjax";
 
 		if($createNew) {
-			$extraAttributes .= " data-tags	='true'";
+			$attributes .= " data-tags	='true'";
 		}
 
 		$this->html .="
 		<div class='col-sm-$width col-xs-11'>
-			<select data-minimum-input-length='1' $extraAttributes data-placeholder='$title' data-allow-clear='true' data-ajax--url='$api' data-ajax--data-type='json' data-ajax--type='GET' data-ajax--quiet-millis='50' name='$name' id='$name'>
+			<select data-minimum-input-length='1' $attributes data-placeholder='$title' data-allow-clear='true' data-ajax--url='$api' data-ajax--data-type='json' data-ajax--type='GET' data-ajax--quiet-millis='50' name='$name' id='$name'>
 				<option value='$id'>$text</option>
 			</select>
 		</div>";
