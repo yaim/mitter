@@ -244,11 +244,7 @@ class FormSaver
 
 	public function MorphToMany($name, $data = array())
 	{
-		foreach ($data as $key => $item) {
-			$data[$key] = array_filter($item);
-		}
-
-		$data = array_filter($data);
+		$data = mitterDeepArrayFilter($data);
 		$oldCollection = $this->model->$name;
 
 		foreach ($oldCollection as $oldRelation) {
