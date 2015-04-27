@@ -111,8 +111,9 @@ class FormBuilder
 					}
 
 					foreach ($oldData as $data) {
-						if($i == $count)
+						if($i == $count) {
 							$repeat = true;
+						}
 
 						$this->rowPrefix($title, $name, $repeat);
 						$this->rowContent($name, $field, true, $data, $num = $i);

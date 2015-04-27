@@ -27,7 +27,7 @@ class FormSaver
 				if (isset($nodeModel->id)) {
 					$id = $nodeModel->id;
 				} else {
-					die('Saved node model does not have an id!');
+					die('Saved node model does not have an ID!');
 				}
 			} else {
 				$id = (int) $this->inputs['id'];
@@ -244,15 +244,19 @@ class FormSaver
 
 	public function MorphToMany($name, $data = array())
 	{
+		// @todo: MorphToMany relation ignore all clear (to fix)
 		$data = mitterDeepArrayFilter($data);
-		$oldCollection = $this->model->$name;
 
-		foreach ($oldCollection as $oldRelation) {
-			call_user_func(array($this->model, $name))->detach($oldRelation);
+		$newRelations = $this->newRelationsCollector($name, $data)->unique();
+		$allRelations = $this->model->$name;
+		$oldRelations = $allRelations->diff($newRelations);
+
+		if(!empty($oldRelations)) {
+			call_user_func(array($this->model, $name))->detach($oldRelations->lists('id'));
 		}
 
-		if(!empty($data)) {
-			call_user_func(array($this->model, $name))->attach($data);
+		if(!empty($newRelations)) {
+			call_user_func(array($this->model, $name))->attach($newRelations->lists('id'));
 		}
 	}
 
@@ -269,8 +273,37 @@ class FormSaver
 
 	public function HasMany($name, $data)
 	{
+		$newRelations = $this->newRelationsCollector($name, $data);
+		$allRelations = $this->model->$name;
+		$oldRelations = $allRelations->diff($newRelations);
+
+		foreach ($oldRelations as $oldRelation) {
+			$oldRelation->delete();
+		}
+
+		if (isset($newRelations[0])) {
+			call_user_func(array($this->model, $name))->saveMany($newRelations->all());
+		}
+	}
+
+	public function getRelatedModel($name)
+	{
+		return get_class(call_user_func(array($this->model, $name))->getQuery()->getModel());
+	}
+
+	public function getForeignKey($name)
+	{
+		return call_user_func(array($this->model, $name))->getForeignKey();
+	}
+
+	public function getOtherKey($name)
+	{
+		return call_user_func(array($this->model, $name))->getOtherKey();
+	}
+
+	public function newRelationsCollector($name, $data)
+	{
 		$model = $this->getRelatedModel($name);
-		// $newRelations = array();
 		$newRelations = new \Illuminate\Database\Eloquent\Collection;
 		$createKey = mitterFindNestedArrayKey($this->structure['relations'][$name], 'create');
 
@@ -310,32 +343,6 @@ class FormSaver
 				$newRelations->add($relation);
 			}
 		}
-
-		$allRelations = call_user_func(array($this->model, $name))->get();
-		$oldRelations = $allRelations->diff($newRelations);
-
-		foreach ($oldRelations as $oldRelation) {
-			$oldRelation->delete();
-		}
-
-		if (isset($newRelations[0])) {
-			call_user_func(array($this->model, $name))->saveMany($newRelations->all());
-		}
+		return $newRelations;
 	}
-
-	public function getRelatedModel($name)
-	{
-		return get_class(call_user_func(array($this->model, $name))->getQuery()->getModel());
-	}
-
-	public function getForeignKey($name)
-	{
-		return call_user_func(array($this->model, $name))->getForeignKey();
-	}
-
-	public function getOtherKey($name)
-	{
-		return call_user_func(array($this->model, $name))->getOtherKey();
-	}
-
 }
