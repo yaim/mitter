@@ -278,6 +278,58 @@ class FormBuilder
 		</div>";
 	}
 
+	public function image($name, $title, $field, $oldData = null)
+	{
+		extract($field);
+
+		if(is_array($oldData)) {
+			$nameField = (isset($field['name_field']))? $field['name_field'] : 'name';
+			$oldData = (isset($oldData[$nameField]))? $oldData[$nameField] : '';
+		}
+
+		$width = (!isset($width))? 12 : $width;
+
+		if($oldData) {
+			$width = ($width >= 3)? $width-2 : 1;
+
+			$this->html .= "
+			<div class='col-sm-$width'>
+				<input class='form-horizontal row-border form-control' name='$name' type='file' id='$name' placeholder='$title'>
+			</div>
+			<div class='col-sm-1 btn' data-toggle='modal' data-target='#myModal'>
+				<img class='form-horizontal row-border' width='100%' src='$oldData' alt='$name'/>
+			</div>
+			<div class='col-sm-1 btn-group' data-toggle='buttons'>
+				<label class='btn btn-danger fa fa-remove' title='remove'>
+					<input type='checkbox' name='$name-remove' id='$name-remove' autocomplete='off'>
+				</label>
+			</div>
+			<div class='modal fade' id='myModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+				<div class='modal-dialog'>
+					<div class='modal-content'>
+						<div class='modal-header'>
+							<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+							<h4 class='modal-title' id='myModalLabel'>Modal title</h4>
+						</div>
+						<div class='modal-body'>
+							<img class='form-horizontal row-border' width='100%' src='$oldData' alt='$name' />
+						</div>
+						<div class='modal-footer'>
+							<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+						</div>
+					</div>
+				</div>
+			</div>";
+		} else {
+			$this->html .= "
+			<div class='col-sm-$width'>
+				<input class='form-horizontal row-border form-control' name='$name' type='file' id='$name' placeholder='$title'>
+			</div>";
+
+		}
+
+	}
+
 	public function password($name, $title, $field, $oldData = null)
 	{
 		return;
