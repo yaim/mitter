@@ -296,7 +296,7 @@ class FormBuilder
 			<div class='col-sm-$width'>
 				<input class='form-horizontal row-border form-control' name='$name' type='file' id='$name' placeholder='$title'>
 			</div>
-			<div class='col-sm-1 btn' data-toggle='modal' data-target='#myModal'>
+			<div class='col-sm-1 btn' data-toggle='modal' data-target='#$name-modal'>
 				<img class='form-horizontal row-border' width='100%' src='$oldData' alt='$name'/>
 			</div>
 			<div class='col-sm-1 btn-group' data-toggle='buttons'>
@@ -304,12 +304,12 @@ class FormBuilder
 					<input type='checkbox' name='$name-remove' id='$name-remove' autocomplete='off'>
 				</label>
 			</div>
-			<div class='modal fade' id='myModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+			<div class='modal fade' id='$name-modal' tabindex='-1' role='dialog' aria-labelledby='$name-modal-lable' aria-hidden='true'>
 				<div class='modal-dialog'>
 					<div class='modal-content'>
 						<div class='modal-header'>
 							<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-							<h4 class='modal-title' id='myModalLabel'>Modal title</h4>
+							<h4 class='modal-title' id='$name-modal-lable'>$title</h4>
 						</div>
 						<div class='modal-body'>
 							<img class='form-horizontal row-border' width='100%' src='$oldData' alt='$name' />
@@ -362,22 +362,21 @@ class FormBuilder
 			$oldData = (isset($oldData[$nameField]))? $oldData[$nameField] : '';
 		}
 
-		$width = (!isset($width))? 11 : $width-1;
-
-		$this->html .="
-		<div class='col-sm-$width col-xs-11'>
-			<input class='form-horizontal row-border form-control' value='$oldData' type='text' placeholder='$title' locked disabled>
-		</div>";
 
 		if(isset($relationEditLink) && !empty(@$relationEditLink)) {
+			$width = (!isset($width))? 11 : $width-1;
 			$this->html .="
+			<div class='col-sm-$width col-xs-11'>
+				<input class='form-horizontal row-border form-control' value='$oldData' type='text' placeholder='$title' locked disabled>
+			</div>
 			<div class='col-xs-1'>
 				<a class='btn btn-sm btn-info link-to-relation' target='_blank' href='$relationEditLink'><i class='fa fa-external-link'></i></a>
 			</div>";
 		} else {
+			$width = (!isset($width))? 12 : $width;
 			$this->html .="
-			<div class='col-xs-1'>
-				<a class='btn btn-sm btn-info disabled'><i class='fa fa-external-link'></i></a>
+			<div class='col-sm-$width'>
+				<input class='form-horizontal row-border form-control' value='$oldData' type='text' placeholder='$title' locked disabled>
 			</div>";
 		}
 	}
@@ -634,8 +633,6 @@ class FormBuilder
 
 		extract($field);
 
-		$width = (!isset($width))? 11 : $width - 1;
-
 		/*
 			// @todo create a conditional ajaxGuess for Polyrophic Relations 
 
@@ -655,23 +652,28 @@ class FormBuilder
 			$attributes .= " data-tags	='true'";
 		}
 
-		$this->html .="
-		<div class='col-sm-$width col-xs-11'>
-			<select data-minimum-input-length='1' $attributes data-placeholder='$title' data-allow-clear='true' data-ajax--url='$api' data-ajax--data-type='json' data-ajax--type='GET' data-ajax--quiet-millis='50' name='$name' id='$name'>
-				<option value='$id'>$text</option>
-			</select>
-		</div>";
 
 		if(isset($relationEditLink) && !empty(@$relationEditLink)) {
+			$width = (!isset($width))? 11 : $width - 1;
+			$this->html .="
+			<div class='col-sm-$width col-xs-11'>
+				<select data-minimum-input-length='1' $attributes data-placeholder='$title' data-allow-clear='true' data-ajax--url='$api' data-ajax--data-type='json' data-ajax--type='GET' data-ajax--quiet-millis='50' name='$name' id='$name'>
+					<option value='$id'>$text</option>
+				</select>
+			</div>";
 			$this->html .="
 			<div class='col-xs-1'>
 				<a class='btn btn-sm btn-info link-to-relation' target='_blank' href='$relationEditLink'><i class='fa fa-external-link'></i></a>
 			</div>";
 		} else {
+			$width = (!isset($width))? 12 : $width;
 			$this->html .="
-			<div class='col-xs-1'>
-				<a class='btn btn-sm btn-info disabled'><i class='fa fa-external-link'></i></a>
+			<div class='col-sm-$width'>
+				<select data-minimum-input-length='1' $attributes data-placeholder='$title' data-allow-clear='true' data-ajax--url='$api' data-ajax--data-type='json' data-ajax--type='GET' data-ajax--quiet-millis='50' name='$name' id='$name'>
+					<option value='$id'>$text</option>
+				</select>
 			</div>";
+
 		}
 	}
 
