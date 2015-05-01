@@ -274,7 +274,7 @@ class FormBuilder
 
 		$this->html .="
 		<div class='col-sm-$width'>
-			<input class='form-horizontal row-border form-control' value='$oldData' name='$name' type='text' id='$name' placeholder='$title'>
+			<input class='form-horizontal row-border form-control' value='$oldData' name='$name' type='text' id='$name' placeholder='$title' title='$title'>
 		</div>";
 	}
 
@@ -345,7 +345,7 @@ class FormBuilder
 
 		$this->html .="
 		<div class='col-sm-$width'>
-			<input class='form-horizontal row-border form-control' type='password' value='$oldData' name='$name' id='$name' placeholder='$title'>
+			<input class='form-horizontal row-border form-control' type='password' value='$oldData' name='$name' id='$name' placeholder='$title' title='$title'>
 		</div>";
 	}
 
@@ -368,7 +368,7 @@ class FormBuilder
 			$width = (!isset($width))? 11 : $width-1;
 			$this->html .="
 			<div class='col-sm-$width col-xs-11'>
-				<input class='form-horizontal row-border form-control' value='$oldData' type='text' placeholder='$title' locked disabled>
+				<input class='form-horizontal row-border form-control' value='$oldData' type='text' placeholder='$title' locked disabled title='$title'>
 			</div>
 			<div class='col-xs-1'>
 				<a class='btn btn-sm btn-info link-to-relation' target='_blank' href='$relationEditLink'><i class='fa fa-external-link'></i></a>
@@ -377,7 +377,7 @@ class FormBuilder
 			$width = (!isset($width))? 12 : $width;
 			$this->html .="
 			<div class='col-sm-$width'>
-				<input class='form-horizontal row-border form-control' value='$oldData' type='text' placeholder='$title' locked disabled>
+				<input class='form-horizontal row-border form-control' value='$oldData' type='text' placeholder='$title' locked disabled title='$title'>
 			</div>";
 		}
 	}
@@ -416,7 +416,7 @@ class FormBuilder
 
 		$this->html .="
 		<div class='col-sm-$width'>
-			<input class='form-horizontal row-border form-control' value='$oldData' name='$name' type='text' id='$name' placeholder='$title' data-dateTimePicker $default>
+			<input class='form-horizontal row-border form-control' value='$oldData' name='$name' type='text' id='$name' placeholder='$title' data-dateTimePicker $default title='$title'>
 		</div>";
 	}
 
@@ -433,7 +433,7 @@ class FormBuilder
 
 		$this->html .="
 		<div class='col-sm-$width'>
-			<input class='form-horizontal row-border form-control' value='$oldData' name='$name' type='text' id='$name' placeholder='$title' data-datePicker>
+			<input class='form-horizontal row-border form-control' value='$oldData' name='$name' type='text' id='$name' placeholder='$title' data-datePicker title='$title'>
 		</div>";
 	}
 
@@ -450,7 +450,7 @@ class FormBuilder
 
 		$this->html .="
 		<div class='col-sm-$width'>
-			<input class='form-horizontal row-border form-control' value='$oldData' name='$name' type='text' id='$name' placeholder='$title' data-timePicker>
+			<input class='form-horizontal row-border form-control' value='$oldData' name='$name' type='text' id='$name' placeholder='$title' data-timePicker title='$title'>
 		</div>";
 	}
 
@@ -618,7 +618,7 @@ class FormBuilder
 			if(isset($relationId)) {
 				if(!isset($model)) {
 					$path = str_replace("/", "", $field["api"]);
-					$model = call_user_func([$this->apiController, 'getModelName'], $path);
+					$model = call_user_func([$this->apiController, 'getModelName'], explode('?', $path)[0]);
 				}
 
 				$relationModel = call_user_func(array($model, 'find'), $relationId);
