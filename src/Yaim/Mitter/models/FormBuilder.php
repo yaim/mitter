@@ -563,6 +563,7 @@ class FormBuilder
 		extract($field);
 		$oldDataArray = [];
 		$name .= '[]';
+		$minimum = (isset($minimum)) ? $minimum : 1;
 
 		if (isset($oldData)) {
 			foreach ($oldData as $data) {
@@ -585,7 +586,7 @@ class FormBuilder
 
 		$this->html .="
 		<div class='col-sm-$width'>
-			<select $attributes data-minimum-input-length='1' data-placeholder='$title' data-allow-clear='true' data-ajax--url='$api' data-ajax--data-type='json' data-ajax--type='GET' data-ajax--quiet-millis='50' multiple='multiple' name='$name' id='$name' data-api='$api' placeholder='$title'>";
+			<select $attributes data-minimum-input-length='$minimum' data-placeholder='$title' data-allow-clear='true' data-ajax--url='$api' data-ajax--data-type='json' data-ajax--type='GET' data-ajax--quiet-millis='50' multiple='multiple' name='$name' id='$name' data-api='$api' placeholder='$title'>";
 
 		foreach ($oldDataArray as $value) {
 			$this->html .='
@@ -634,6 +635,8 @@ class FormBuilder
 
 		extract($field);
 
+		$minimum = (isset($minimum)) ? $minimum : 1;
+
 		/*
 			// @todo create a conditional ajaxGuess for Polyrophic Relations 
 
@@ -658,7 +661,7 @@ class FormBuilder
 			$width = (!isset($width))? 11 : $width - 1;
 			$this->html .="
 			<div class='col-sm-$width col-xs-11'>
-				<select data-minimum-input-length='1' $attributes data-placeholder='$title' data-allow-clear='true' data-ajax--url='$api' data-ajax--data-type='json' data-ajax--type='GET' data-ajax--quiet-millis='50' name='$name' id='$name'>
+				<select data-minimum-input-length='$minimum' $attributes data-placeholder='$title' data-allow-clear='true' data-ajax--url='$api' data-ajax--data-type='json' data-ajax--type='GET' data-ajax--quiet-millis='50' name='$name' id='$name'>
 					<option value='$id'>$text</option>
 				</select>
 			</div>";
@@ -670,7 +673,7 @@ class FormBuilder
 			$width = (!isset($width))? 12 : $width;
 			$this->html .="
 			<div class='col-sm-$width'>
-				<select data-minimum-input-length='1' $attributes data-placeholder='$title' data-allow-clear='true' data-ajax--url='$api' data-ajax--data-type='json' data-ajax--type='GET' data-ajax--quiet-millis='50' name='$name' id='$name'>
+				<select data-minimum-input-length='$minimum' $attributes data-placeholder='$title' data-allow-clear='true' data-ajax--url='$api' data-ajax--data-type='json' data-ajax--type='GET' data-ajax--quiet-millis='50' name='$name' id='$name'>
 					<option value='$id'>$text</option>
 				</select>
 			</div>";
