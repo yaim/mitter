@@ -308,7 +308,7 @@ class FormSaver
 			: $field['path']['name'];
 
 		if(!isset($field['file_name'])) {
-			$fileName = str_replace(' ', '_', $file->getClientOriginalName());
+			$fileName = preg_replace("/[^a-zA-Z0-9.]/", "", $file->getClientOriginalName());
 		} else {
 			if(isset($field['file_name']['callback']) && isset($field['file_name']['name'])) {
 				$fileName = $this->model->$field['file_name']['callback']($field['file_name']['name']);
