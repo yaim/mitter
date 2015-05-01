@@ -42,7 +42,7 @@
 
 			foreach ($array as $value) {
 				if (is_array($value)) {
-					$result = findNestedArrayKey($value, $key);
+					$result = mitterfindNestedArrayKey($value, $key);
 
 					if($result) {
 						return $result;
