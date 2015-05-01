@@ -697,6 +697,14 @@ class FormBuilder
 
 	public function getPreFixedAPI($api)
 	{
+		if(strpos($api, '%')){
+			preg_match_all('~[%](.*?)[%]~', $api, $wildcards);
+
+			foreach ($wildcards[0] as $key => $wildcard) {
+				$api = str_replace($wildcard, $this->getSelfModel()->$wildcards[1][$key], $api);
+			}
+		}
+
 		$prefix = (isset($this->structure['apiPrefix'])) ? $this->structure['apiPrefix'] : '';
 		return $prefix.$api;
 	}
