@@ -291,6 +291,7 @@ class FormBuilder
 
 		if($oldData) {
 			$width = ($width >= 3)? $width-2 : 1;
+			$removeName = $name."[remove]";
 
 			$this->html .= "
 			<div class='col-sm-$width'>
@@ -301,7 +302,7 @@ class FormBuilder
 			</div>
 			<div class='col-sm-1 btn-group' data-toggle='buttons'>
 				<label class='btn btn-danger fa fa-remove' title='remove'>
-					<input type='checkbox' name='$name-remove' id='$name-remove' autocomplete='off'>
+					<input type='checkbox' name='$removeName' id='$removeName' autocomplete='off'>
 				</label>
 			</div>
 			<div class='modal fade' id='$name-modal' tabindex='-1' role='dialog' aria-labelledby='$name-modal-lable' aria-hidden='true'>

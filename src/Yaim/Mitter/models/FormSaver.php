@@ -12,6 +12,7 @@ class FormSaver
 	public function __construct($structure, $inputs, $nodeModel = false)
 	{
 		$inputs = mitterDeepArrayFilter($inputs);
+		// dd($inputs);
 		
 		$this->nodeModel = $nodeModel;
 		$this->structure = $structure;
@@ -81,6 +82,15 @@ class FormSaver
 			foreach ($structure['self'] as $name => $field) {
 				if ((isset($field['type'])) && ($field['type'] == 'divider')) {
 					continue;
+				} elseif (isset($field['upload']) && $field['upload'] == true) {
+					if(isset($this->inputs[$name]) && is_array($this->inputs[$name])) {
+						if(isset($this->inputs[$name]['remove'])) {
+							$this->inputs[$name] = '';
+						}
+					} elseif (\Request::file($name) !== null) {
+						$file = \Request::file($name);
+						$this->inputs[$name] = $this->upload($file, $field);
+					}
 				}
 
 				$repeat = (isset($field['repeat'])) ? $field['repeat'] : false;
@@ -95,6 +105,11 @@ class FormSaver
 
 				if ((isset($field['type'])) && ($field['type'] == 'divider')) {
 					continue;
+				} elseif (isset($field['upload']) && $field['upload'] == true) {
+					if (\Request::file($name) !== null) {
+						$file = \Request::file($name);
+						$this->inputs[$name] = $this->upload($file, $field);
+					}
 				}
 
 				if(isset($field['key'])) {
@@ -284,6 +299,31 @@ class FormSaver
 		if (isset($newRelations[0])) {
 			call_user_func(array($this->model, $name))->saveMany($newRelations->all());
 		}
+	}
+
+	public function upload($file, $field)
+	{
+		$path = (isset($field['path']['callback']))
+			? $this->model->$field['path']['callback']($field['path']['name'])
+			: $field['path']['name'];
+
+		if(!isset($field['file_name'])) {
+			$fileName = str_replace(' ', '_', $file->getClientOriginalName());
+		} else {
+			if(isset($field['file_name']['callback']) && isset($field['file_name']['name'])) {
+				$fileName = $this->model->$field['file_name']['callback']($field['file_name']['name']);
+			} elseif(isset($field['file_name']['callback']) && !isset($field['file_name']['name'])) {
+				$fileName = $this->model->$field['file_name']['callback']($file);
+			} elseif(!isset($field['file_name']['callback']) && isset($field['file_name']['name'])) {
+				$fileName = $field['file_name']['name'];
+			}
+		}
+
+		$path = str_replace('//', '/', '/'.$path.'/');
+
+		$file->move(public_path().$path, $fileName);
+
+		return $path.$fileName;
 	}
 
 	public function getRelatedModel($name)
