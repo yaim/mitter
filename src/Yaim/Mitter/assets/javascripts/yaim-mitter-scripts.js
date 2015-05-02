@@ -1,15 +1,13 @@
 $(document).ready(function(){
-	$("*[data-conditional]").each(function(){
-		alert($(this).prev("select"));
-	});
-
 	$("*[data-selectAjax]").select2();
 
 	$("*[data-dateTimePicker]").each(function(){
 		if (!$(this).val()) {
 			if (typeof $(this).data('default') !== 'undefined') {
 				try {
-					$(this).datetimepicker("setDate", new Date());
+					$(this).datetimepicker({
+						format:  'YYYY-MM-DD HH:mm:ss',
+					});
 				} catch(err) {
 					console.log('Error on (() -> '+err);
 				}
@@ -17,7 +15,9 @@ $(document).ready(function(){
 			}
 		};
 		try {
-			$(this).datetimepicker();
+			$(this).datetimepicker({
+				format:  'YYYY-MM-DD HH:mm:ss',
+			});
 		} catch(err) {
 			console.log('Error on datetimepicker() -> '+err);
 		}
@@ -26,11 +26,23 @@ $(document).ready(function(){
 
 	$("*[data-datePicker]").each(function(){
 		try {
-			$(this).datepicker();
+			$(this).datetimepicker({
+				format: 'YYYY-MM-DD',
+			});
 		} catch(err) {
-			console.log('Error on datepicker() -> '+err);
+			console.log('Error on datetimepicker() -> '+err);
 		}
 		
+	});
+
+	$("*[data-timePicker]").each(function(){
+		try {
+			$(this).datetimepicker({
+				format:  'HH:mm:ss',
+			});
+		} catch(err) {
+			console.log('Error on datetimepicker() -> '+err);
+		}
 	});
 
 	$("*[data-moment]").each(function(){
@@ -42,21 +54,6 @@ $(document).ready(function(){
 			$(this).niceScroll();
 		} catch(err) {
 			console.log('Error on niceScroll() -> '+err);
-		}
-		
-	});
-
-	$("*[data-timePicker]").each(function(){
-		try {
-			$(this).timepicker({
-				minuteStep: 1,
-				secondStep: 1,
-				showSeconds: true,
-				showMeridian: false,
-				defaultTime: false,
-			});
-		} catch(err) {
-			console.log('Error on timepicker() -> '+err);
 		}
 	});
 
