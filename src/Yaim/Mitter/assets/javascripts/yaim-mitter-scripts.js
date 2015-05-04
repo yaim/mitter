@@ -11,7 +11,6 @@ $(document).ready(function(){
 				} catch(err) {
 					console.log('Error on (() -> '+err);
 				}
-				
 			}
 		};
 		try {
@@ -21,7 +20,6 @@ $(document).ready(function(){
 		} catch(err) {
 			console.log('Error on datetimepicker() -> '+err);
 		}
-		
 	});
 
 	$("*[data-datePicker]").each(function(){
@@ -116,7 +114,6 @@ function appendRemoveButton(name)
 			$('<span class="row-remove-key fa-times"></span>').appendTo($(this).closest(".row"));
 		}
 	});
-
 }
 
 function repeatElement(element)
@@ -125,6 +122,7 @@ function repeatElement(element)
 		this.name = this.name.replace(/\[(\d+)\]/, function(str,p1) {
 			return '[' + (parseInt(p1,10)+1) + ']';
 		});
+
 		this.id = this.name;
 		this.value = "";
 
@@ -137,7 +135,6 @@ function repeatElement(element)
 	append.find('.select2-container').remove();
 	append.find('.not-in-repeat').remove();
 	append.find('.link-to-relation').attr('href', '').addClass('disabled').removeClass('link-to-relation');
-
 	append.find("[data-selectAjax]").select2();
 
 	element.after(append);
