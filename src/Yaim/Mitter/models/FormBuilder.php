@@ -529,6 +529,19 @@ class FormBuilder
 
 	}
 
+	public function editor($name, $title, $field, $oldData = "")
+	{
+		extract($field);
+
+		$width = (!isset($width))? 12 : $width;
+
+		$this->html .="
+		<div class='col-sm-$width'>
+			<textarea class='form-horizontal row-border form-control ckeditor' name='$name' placeholder='$title' cols='50' rows='5' id='$name'>$oldData</textarea>
+		</div>";
+
+	}
+
 	public function bool($name, $title, $field, $oldData = null)
 	{
 		$checked = "";
