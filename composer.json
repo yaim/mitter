@@ -11,7 +11,8 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "laravel/framework": ">=4.2"
+        "laravel/framework": ">=4.2",
+        "ezyang/htmlpurifier": "~4.6"
     },
     "autoload": {
         "psr-0": {
