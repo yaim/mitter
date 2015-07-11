@@ -34,7 +34,7 @@ class BaseController extends Controller {
 	{
 		$search = (null !== \Input::get('search')) ? \Input::get('search') : "";
 		$structure = $this->structure;
-		$searchableField = isset($structure['searchable_fields'][0])? $structure['searchable_fields'][0] : 'name';
+		$searchableField = isset($structure['searchable_fields'])? $structure['searchable_fields'] : 'name';
 		$required = array();
 		$models = array();
 		$rows = array();
@@ -61,10 +61,23 @@ class BaseController extends Controller {
 				}
 			}
 
+			$models = collect();
 			if(isset($relations)) {
-				$models = call_user_func(array($structure['model'], 'with'), $relations)->where($searchableField, 'LIKE', "%$search%")->get();
+				if(is_array($searchableField)) {
+					foreach ($searchableField as $field) {
+						$models = $models->merge(call_user_func(array($structure['model'], 'with'), $relations)->where($field, 'LIKE', "%$search%")->get());
+					}
+				} else {
+					$models = $models->merge(call_user_func(array($structure['model'], 'with'), $relations)->where($searchableField, 'LIKE', "%$search%")->get());
+				}
 			} else {
-				$models = call_user_func(array($structure['model'], 'where'), $searchableField, 'LIKE', "%$search%")->get();
+				if(is_array($searchableField)) {
+					foreach ($searchableField as $field) {
+						$models = $models->merge(call_user_func(array($structure['model'], 'where'), $field, 'LIKE', "%$search%")->get());
+					}
+				} else {
+					$models = $models->merge(call_user_func(array($structure['model'], 'where'), $searchableField, 'LIKE', "%$search%")->get());
+				}
 			}
 
 			$models = $models->toArray();
