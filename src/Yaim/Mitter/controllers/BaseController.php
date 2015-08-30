@@ -80,6 +80,10 @@ class BaseController extends Controller {
 				}
 			}
 
+			foreach ($models as $key => $model) {
+				$models[$key]->revealHidden();
+			}
+
 			$models = $models->toArray();
 
 			list($required_keys) = array_divide($required);
