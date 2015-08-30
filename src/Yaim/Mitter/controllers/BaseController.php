@@ -184,7 +184,7 @@ class BaseController extends Controller {
 		}
 
 		$model = call_user_func(array($this->structure['model'], 'withTrashed'))->with($relations)->find($id);
-		$modelData = (isset($model))? $modelData = array_filter($model->toArray(), 'mitterNullFilter') : null;
+		$modelData = (isset($model))? $modelData = array_filter($model->revealHidden()->toArray(), 'mitterNullFilter') : null;
 		// $modelData = array_filter(call_user_func(array($this->structure['model'], 'withTrashed'))->with($relations)->find($id)->toArray());
 		if(!isset($modelData)) {
 			return \Response::view('errors.missing', array(), 404);
