@@ -19,6 +19,12 @@ trait BaseModelTrait {
 		}
 	}
 
+	public function revealHidden()
+	{
+		$this->hidden = [];
+		return $this;
+	}
+
 	public function getController()
 	{
 		return $controller = get_called_class()."Controller";
