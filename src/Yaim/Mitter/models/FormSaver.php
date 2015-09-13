@@ -259,19 +259,19 @@ class FormSaver
 
 	public function MorphToMany($name, $data = array())
 	{
-		// @todo: MorphToMany relation ignore all clear (to fix)
 		$data = mitterDeepArrayFilter($data);
 
-		$newRelations = $this->newRelationsCollector($name, $data)->unique();
 		$allRelations = $this->model->$name;
-		$oldRelations = $allRelations->diff($newRelations);
+		$inputedRelations = $this->newRelationsCollector($name, $data);
+		$newRelations = $inputedRelations->diff($allRelations);
+		$oldRelations = $allRelations->diff($inputedRelations);
 
-		if(!empty($oldRelations)) {
-			call_user_func(array($this->model, $name))->detach($oldRelations->lists('id'));
+		if(!$oldRelations->isEmpty()) {
+			call_user_func(array($this->model, $name))->detach($oldRelations->lists('id')->toArray());
 		}
 
-		if(!empty($newRelations)) {
-			call_user_func(array($this->model, $name))->attach($newRelations->lists('id'));
+		if(!$newRelations->isEmpty()) {
+			call_user_func(array($this->model, $name))->attach($newRelations->lists('id')->toArray());
 		}
 	}
 
