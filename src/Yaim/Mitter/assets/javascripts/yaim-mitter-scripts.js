@@ -156,26 +156,35 @@ function groupButton(field)
 
 function groupAdd(field)
 {
-	var group = field.closest("div");
-	append = group.clone();
+	var $group = field.closest("div");
+	var $groupHolder = $group.closest("div");
+	var $append = $group.clone();
+	var groupkey = $group.data('groupkey');
 
-	append.find(':input').each(function(){
+	if(groupkey !== undefined) {
+		var newgroupkey = '['+Math.random().toString(36).substr(2, 18)+']';
+		var regex = new RegExp('\\['+groupkey+'\\]', "g");
+		$append.html($append.html().replace(regex, newgroupkey));
+		$append.attr('data-groupkey', newgroupkey);
+	}
+
+	$append.find(':input').each(function(){
 		this.value = "";
 	});
 
-	append.find("[data-group-add]").each(function(){
+	$append.find("[data-group-add]").each(function(){
 		$(this).click(function(){
 			groupAdd($(this));
 		});
 	});
 
-	append.find("[data-group-remove]").each(function(){
+	$append.find("[data-group-remove]").each(function(){
 		$(this).click(function(){
 			groupRemove($(this));
 		});
 	});
 
-	group.after(append);
+	$group.after($append);
 
 	return false;
 }

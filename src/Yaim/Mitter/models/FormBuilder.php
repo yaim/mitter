@@ -458,22 +458,90 @@ class FormBuilder
 	{
 		extract($field);
 		$width = (!isset($width))? 12 : $width;
-		$name = (isset($name)) ? $name."[]" : null;
+		$name = (isset($name)) ? $name : null;
 
 		if (isset($oldData)) {
-			$oldData = json_decode($oldData);
-			foreach ($oldData as $data) {
+			$oldData = json_decode($oldData, true);
+			foreach ($oldData as $key => $data) {
 				$this->html .="
-				<div class='col-sm-$width'>
-					<input data-group='$title' class='form-horizontal row-border form-control' value='$data' name='$name' type='text' id='$name' placeholder='$title' />
-				</div>
+					<div class='col-sm-$width' data-groupkey='$key'>
+						<div class='panel box box-primary' data-group='$title'>
+							<div class='box-header with-border'>
+								<h4 class='box-title'>
+									<a data-toggle='collapse' href='#$key'>$title</a>
+								</h4>
+							</div>
+							<div id='$key' class='panel-collapse collapse in'>
+								<div class='box-body'>
+				";
+
+				if(isset($field['manualKey'])) {
+					if($field['manualKey'] == true) {
+						$this->html .="
+									<input class='form-horizontal row-border form-control' value='$key' name='$name"."[$key][arraykey]' type='text' id='$name' placeholder='$title Key' />
+						";
+					}
+				}
+
+				if(isset($field['fields'])) {
+					foreach ($field['fields'] as $fieldName => $fieldTitle) {
+						$fieldValue = isset($data[$fieldName]) ? $data[$fieldName] : '';
+						$this->html .="
+									<input class='form-horizontal row-border form-control' value='$fieldValue' name='$name"."[$key][$fieldName]' type='text' id='$name' placeholder='$title $fieldTitle' />
+						";
+					}
+				} else {
+					$this->html .="
+									<input class='form-horizontal row-border form-control' value='$data' name='$name"."[$key][arrayvalue]' type='text' id='$name' placeholder='$title Value' />
+					";
+				}
+
+				$this->html .="
+								</div>
+							</div>
+						</div>
+					</div>
 				";
 			}
 		} else {
+			$key = str_random(16);
 			$this->html .="
-			<div class='col-sm-$width'>
-				<input data-group='$title' class='form-horizontal row-border form-control' value='' name='$name' type='text' id='$name' placeholder='$title' />
-			</div>
+				<div class='col-sm-$width' data-groupkey='$key'>
+					<div class='panel box box-primary' data-group='$title'>
+						<div class='box-header with-border'>
+							<h4 class='box-title'>
+								<a data-toggle='collapse' href='#$key'>$title</a>
+							</h4>
+						</div>
+						<div id='$key' class='panel-collapse collapse in'>
+							<div class='box-body'>
+			";
+
+			if(isset($field['manualKey'])) {
+				if($field['manualKey'] == true) {
+					$this->html .="
+								<input class='form-horizontal row-border form-control' value='' name='$name"."[$key][arraykey]' type='text' id='$name' placeholder='$title Key' />
+					";
+				}
+			}
+
+			if(isset($field['fields'])) {
+				foreach ($field['fields'] as $fieldName => $fieldTitle) {
+					$this->html .="
+								<input class='form-horizontal row-border form-control' value='' name='$name"."[$key][$fieldName]' type='text' id='$name' placeholder='$title $fieldTitle' />
+					";
+				}
+			} else {
+				$this->html .="
+								<input class='form-horizontal row-border form-control' value='' name='$name"."[$key][arrayvalue]' type='text' id='$name' placeholder='$title Value' />
+				";
+			}
+
+			$this->html .="
+							</div>
+						</div>
+					</div>
+				</div>
 			";
 		}
 	}

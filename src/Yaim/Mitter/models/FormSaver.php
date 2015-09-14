@@ -64,13 +64,33 @@ class FormSaver
 
 		foreach ($addresses as $address) {
 			$address = explode(".", $address);
-			if ((bool)count(array_filter(array_keys($this->inputs[$address[0]]), 'is_string'))) {
-				$this->inputs[$address[0]][$address[1]] = json_encode($this->inputs[$address[0]][$address[1]]);
-			} else {
-				foreach ($this->inputs[$address[0]] as $key => $value) {
-					$this->inputs[$address[0]][$key][$address[1]] = json_encode($value[$address[1]]);
+			$fieldName = $address[0];
+			$field = $this->structure['self'][$fieldName];
+			$data = $this->inputs[$fieldName];
+
+			$newDataStructure = [];
+			$arrayKeyIndex = 0;
+			foreach ($data as $key => $item) {
+				if(isset($field['manualKey']) && $field['manualKey'] == true) {
+					$arrayKey = $item['arraykey'];
+					unset($item['arraykey']);
+				} else {
+					$arrayKey = $arrayKeyIndex;
 				}
+				$newDataStructure[$arrayKey] = $item;
+				$arrayKeyIndex++;
 			}
+			$data = $newDataStructure;
+
+			if(!isset($field['fields'])) {
+				$newData = [];
+				foreach ($data as $key => $item) {
+					$newData[$key] = $item['arrayvalue'];
+				}
+				$data = $newData;
+			}
+
+			$this->inputs[$fieldName] = json_encode($data);
 		}
 	}
 
