@@ -717,7 +717,8 @@ class FormBuilder
 			preg_match_all('~[%](.*?)[%]~', $api, $wildcards);
 
 			foreach ($wildcards[0] as $key => $wildcard) {
-				$api = str_replace($wildcard, $this->getSelfModel()->$wildcards[1][$key], $api);
+				$replacable = @$this->getSelfModel()->$wildcards[1][$key];
+				$api = str_replace($wildcard, $replacable, $api);
 			}
 		}
 
