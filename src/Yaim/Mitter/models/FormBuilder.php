@@ -278,6 +278,16 @@ class FormBuilder
 		</div>";
 	}
 
+	public function link($name, $title, $field, $oldData = null)
+	{
+		$width = (!isset($width))? 12 : $width;
+
+		$this->html .="
+		<div class='col-xs-12'>
+			<a class='btn btn-sm btn-info link-to-relation' target='_blank' href='$oldData'><i class='fa fa-external-link'></i></a>
+		</div>";
+	}
+
 	public function image($name, $title, $field, $oldData = null)
 	{
 		extract($field);
