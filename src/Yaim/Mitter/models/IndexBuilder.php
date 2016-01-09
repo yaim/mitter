@@ -90,7 +90,7 @@ class IndexBuilder {
 					</thead>
 					<tbody>';
 
-			foreach ($rows as $id => $fields) {
+			foreach (array_reverse($rows) as $id => $fields) {
 				$update_url = action($this->structure['controller'].'@edit', $id);
 				$this->html .= '
 						<tr class="">
