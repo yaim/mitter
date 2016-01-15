@@ -96,7 +96,7 @@ class IndexBuilder {
 					</thead>
 					<tbody>';
 
-			foreach (array_chunk(array_reverse($rows, true), $pagination['count'])[$pagination['current']-1]  as $id => $fields) {
+			foreach (array_chunk(array_reverse($rows, true), $pagination['count'], true)[$pagination['current']-1]  as $id => $fields) {
 				$update_url = action($this->structure['controller'].'@edit', $id);
 				$this->html .= '
 						<tr class="">
