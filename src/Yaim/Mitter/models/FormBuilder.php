@@ -801,6 +801,7 @@ class FormBuilder
 		}
 
 		$prefix = (isset($this->structure['apiPrefix'])) ? $this->structure['apiPrefix'] : '';
-		return $prefix.$api;
+		
+		return str_replace('//', '/', $prefix.$api);
 	}
 }
