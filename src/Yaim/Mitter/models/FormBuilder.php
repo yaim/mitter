@@ -747,7 +747,6 @@ class FormBuilder
 			$attributes .= " data-tags	='true'";
 		}
 
-
 		if(isset($relationEditLink) && !empty(@$relationEditLink)) {
 			$width = (!isset($width))? 11 : $width - 1;
 			$this->html .="

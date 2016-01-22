@@ -10,6 +10,7 @@ class BaseController extends Controller {
 	protected $nodeModel;
 	protected $apiController;
 	protected $view;
+	protected $paginate;
 
 	public function __construct()
 	{
@@ -38,6 +39,7 @@ class BaseController extends Controller {
 		$required = array();
 		$models = array();
 		$rows = array();
+		$paginate = (!empty($this->paginate)) ? $this->paginate : 20;
 
 
 		if(strlen($search) >= 0) {
@@ -61,53 +63,52 @@ class BaseController extends Controller {
 				}
 			}
 
-			$models = collect();
+			$paginatedModels = new $structure['model'];
+
 			if(isset($relations)) {
-				if(is_array($searchableField)) {
-					foreach ($searchableField as $field) {
-						$models = $models->merge(call_user_func(array($structure['model'], 'with'), $relations)->where($field, 'LIKE', "%$search%")->get());
-					}
-				} else {
-					$models = $models->merge(call_user_func(array($structure['model'], 'with'), $relations)->where($searchableField, 'LIKE', "%$search%")->get());
-				}
-			} else {
-				if(is_array($searchableField)) {
-					foreach ($searchableField as $field) {
-						$models = $models->merge(call_user_func(array($structure['model'], 'where'), $field, 'LIKE', "%$search%")->get());
-					}
-				} else {
-					$models = $models->merge(call_user_func(array($structure['model'], 'where'), $searchableField, 'LIKE', "%$search%")->get());
-				}
+				$paginatedModels = $paginatedModels::with($relations);
 			}
+
+			if(is_array($searchableField)) {
+				$paginatedModels = $paginatedModels->where($searchableField[0], 'LIKE', "%$search%");
+				unset($searchableField[0]);
+
+				foreach ($searchableField as $field) {
+					$paginatedModels = $paginatedModels->orWhere($field, 'LIKE', "%$search%");
+				}			
+			} else {
+				$paginatedModels = $paginatedModels->where($searchableField, 'LIKE', "%$search%");
+			}
+
+			$paginatedModels = $paginatedModels->orderBy('id', 'desc')->paginate($paginate);
+			$models = $paginatedModels->items();
 
 			foreach ($models as $key => $model) {
 				$models[$key]->revealHidden();
 			}
-
-			$models = $models->toArray();
 
 			list($required_keys) = array_divide($required);
 
 			foreach ($models as $model_key => $model) {
 				foreach ($required_keys as $required_key) {
 					$title = $required[$required_key]['title'];
-					$name = array_get($model, $required_key);
+					$value = $model->$required_key;
 
-					if (!isset($name)) {
+					if (!isset($value)) {
 						$address = explode('.', "$required_key");
 
 						if(is_array($model[$address[0]])) {
 							foreach ($model[$address[0]] as $sub) {
-								$name .= array_get($sub, $address[1]).", ";
+								$value .= array_get($sub, $address[1]).", ";
 							}
 						}
 					}
-					$rows[array_get($model, 'id')][$title] = $name;
+					$rows[array_get($model, 'id')][$title] = $value;
 				}
 			}
 		}
 
-		return \View::make($this->view['index'])->with(array('rows' => $rows, 'search' => $search, 'structure' => $structure));
+		return \View::make($this->view['index'])->with(array('rows' => $rows, 'search' => $search, 'structure' => $structure, 'pagination' => $paginatedModels));
 	}
 
 

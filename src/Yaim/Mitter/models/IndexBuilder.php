@@ -5,7 +5,7 @@ class IndexBuilder {
 	protected $html;
 	protected $rows;
 
-	public function __construct($structure, $rows, $searchTerm)
+	public function __construct($structure, $rows, $searchTerm, $pagination)
 	{
 		// @todo: find a way to get rid of this dummy hack fix
 		$laravel = app();
@@ -16,15 +16,14 @@ class IndexBuilder {
 		$this->structure = $structure;
 		$this->rows = $rows;
 
-		$currentPage = (\Input::get('p')) ? \Input::get('p') : 1;
-		$paginationCount = 40;
-		$totalPaginations = count($rows) / $paginationCount;
-		$totalPaginations = (count($rows) % $paginationCount > 0) ? $totalPaginations + 1 : $totalPaginations;
+		$currentPage = $pagination->currentPage();
+		$paginationCount = $pagination->perPage();
+		$totalPaginations = $pagination->lastPage();
 		$pagination = ['total' => $totalPaginations, 'current' => $currentPage, 'count' => $paginationCount];
 
 		$this->index_prefix($searchTerm);
 		$this->index_content($rows, $pagination);
-		$this->index_postfix($pagination);
+		$this->index_postfix($pagination, $searchTerm);
 
 		return $this->html;
 	}
@@ -95,8 +94,7 @@ class IndexBuilder {
 						</tr>
 					</thead>
 					<tbody>';
-
-			foreach (array_chunk(array_reverse($rows, true), $pagination['count'], true)[$pagination['current']-1]  as $id => $fields) {
+			foreach ($rows as $id => $fields) {
 				$update_url = action($this->structure['controller'].'@edit', $id);
 				$this->html .= '
 						<tr class="">
@@ -117,24 +115,26 @@ class IndexBuilder {
 		}
 	}
 
-	public function index_postfix($pagination)
+	public function index_postfix($pagination, $searchTerm)
 	{
+		$search = ($searchTerm) ? '&search='.$searchTerm : null;
+	
 		if($pagination['total'] > 1) {
 			$prev = ($pagination['current'] > 1) ? $pagination['current'] - 1 : $pagination['current'];
 			$next = ($pagination['current'] < $pagination['total']) ? $pagination['current'] + 1 : $pagination['current'];
 			$this->html .='
 							<div class="col-xs-12 text-center">
 								<ul class="pagination">
-									<li><a href="?p='.$prev.'">«</a></li>';
+									<li><a href="?page='.$prev.$search.'">«</a></li>';
 
 			for ($page=1; $page <= $pagination['total']; $page++) { 
 				$active = ($page == $pagination['current']) ? 'class="active"' : null;
 				$this->html .='
-									<li '.$active.'><a href="?p='.$page.'">'.$page.'</a></li>';
+									<li '.$active.'><a href="?page='.$page.$search.'">'.$page.'</a></li>';
 			}
 
 			$this->html .='
-									<li><a href="?p='.$next.'">»</a></li>
+									<li><a href="?page='.$next.$search.'">»</a></li>
 								</ul>
 							</div>';
 		}
