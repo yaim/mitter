@@ -470,6 +470,8 @@ class FormBuilder
 		$width = (!isset($width))? 12 : $width;
 		$name = (isset($name)) ? $name : null;
 
+		$this->html .="<input type='hidden' name='$name'/>";
+
 		if (isset($oldData)) {
 			$oldData = json_decode($oldData, true);
 			foreach ($oldData as $key => $data) {
