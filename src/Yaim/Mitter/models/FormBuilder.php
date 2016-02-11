@@ -472,7 +472,7 @@ class FormBuilder
 
 		$this->html .="<input type='hidden' name='$name'/>";
 
-		$oldData = (is_array($oldData)) ? json_encode($oldData) : $oldData;
+		$oldData = (is_array($oldData) || is_object($oldData)) ? json_encode($oldData) : $oldData;
 
 		if (isset($oldData) && !empty(json_decode($oldData))) {
 			$oldData = json_decode($oldData, true);
