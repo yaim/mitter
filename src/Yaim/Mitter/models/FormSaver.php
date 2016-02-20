@@ -70,15 +70,17 @@ class FormSaver
 
 			$newDataStructure = [];
 			$arrayKeyIndex = 0;
-			foreach ($data as $key => $item) {
-				if(isset($field['manualKey']) && $field['manualKey'] == true) {
-					$arrayKey = $item['arraykey'];
-					unset($item['arraykey']);
-				} else {
-					$arrayKey = $arrayKeyIndex;
+			if(!empty($data)) {
+				foreach ($data as $key => $item) {
+					if(isset($field['manualKey']) && $field['manualKey'] == true) {
+						$arrayKey = $item['arraykey'];
+						unset($item['arraykey']);
+					} else {
+						$arrayKey = $arrayKeyIndex;
+					}
+					$newDataStructure[$arrayKey] = $item;
+					$arrayKeyIndex++;
 				}
-				$newDataStructure[$arrayKey] = $item;
-				$arrayKeyIndex++;
 			}
 			$data = $newDataStructure;
 
