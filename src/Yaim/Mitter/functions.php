@@ -66,3 +66,18 @@
 			return $array;
 		}
 	}
+
+
+	if(!function_exists('mitterNameFixer')) {
+		function mitterNameFixer($name, $repeat = false, $namePrefix = null, $num = 1)
+		{
+			if($repeat && !isset($namePrefix))
+				$name = $name."[$num]";
+			elseif (isset($namePrefix) && !$repeat)
+				$name = $namePrefix."[".$name."]";
+			elseif ($repeat && isset($namePrefix))
+				$name = $namePrefix."[$num][".$name."]";
+
+			return $name;
+		}
+	}
