@@ -32,7 +32,7 @@ class MitterServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		//
+		require_once 'functions.php';
 	}
 
 	/**

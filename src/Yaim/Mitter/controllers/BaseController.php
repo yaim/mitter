@@ -1,7 +1,5 @@
 <?php namespace Yaim\Mitter;
 
-include __DIR__.'/../functions.php';
-
 use Illuminate\Routing\Controller;
 
 class BaseController extends Controller {
