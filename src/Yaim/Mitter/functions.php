@@ -67,7 +67,6 @@
 		}
 	}
 
-
 	if(!function_exists('mitterNameFixer')) {
 		function mitterNameFixer($name, $repeat = false, $namePrefix = null, $num = 1)
 		{
@@ -82,37 +81,37 @@
 		}
 	}
 
-	if (!function_exists('getMitterModelByAliasesName')) {
+	if (!function_exists('mitterGetModelByAliasesName')) {
 		/**
 		 * helper for get field trans value
 		 * @param $name : field name
 		 * @return string : translate name
 		 */
-		function getMitterModelByAliasesName($name)
+		function mitterGetModelByAliasesName($name)
 		{
 			return app(config("mitter.models.aliases.{$name}"));
 		}
 	}
 
-    if (!function_exists('getMitterAliasesByModelName')) {
+    if (!function_exists('mitterGetAliasesByModelName')) {
         /**
          * helper for get field trans value
          * @param $name : field name
          * @return string : translate name
          */
-        function getMitterAliasesByModelName($name)
+        function mitterGetAliasesByModelName($name)
         {
             return array_flip(config('mitter.models.aliases'))[$name];
         }
     }
 
-    if (!function_exists('hasMitterModelAliases')) {
+    if (!function_exists('mitterHasModelAliases')) {
         /**
          * helper for get field trans value
          * @param $name : field name
          * @return string : translate name
          */
-        function hasMitterModelAliases($name)
+        function mitterHasModelAliases($name)
         {
             return (bool)config("mitter.models.aliases.{$name}");
         }

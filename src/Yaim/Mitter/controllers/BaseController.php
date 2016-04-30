@@ -177,8 +177,8 @@ class BaseController extends Controller {
 	private function getModel($model, $id = null)
 	{
 		if (!$model instanceof Model) {
-			if (hasMitterModelAliases($model)) {
-				$model = getMitterModelByAliasesName($model);
+			if (mitterHasModelAliases($model)) {
+				$model = mitterGetModelByAliasesName($model);
 			}
 		}
 		if ($model instanceof Model) {

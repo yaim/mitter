@@ -44,7 +44,7 @@ trait MitterModelActions
     {
         if(!$this->controller)
         {
-            $aliases = getMitterAliasesByModelName(static::class);
+            $aliases = mitterGetAliasesByModelName(static::class);
             $id = $withModel ? $this->id : null;
             return action("\\Yaim\\Mitter\\BaseController@{$actionName}", ['model' => $aliases, 'id' => $id]);
         }
