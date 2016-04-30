@@ -4,55 +4,6 @@ namespace Yaim\Mitter;
 
 trait MitterDataTable
 {
-//    /**
-//     * The datatable except columns
-//     *
-//     * @var array
-//     */
-//    protected $dataTableBlackList = ['created_at', 'updated_at', 'deleted_at'];
-//
-//    /**
-//     * The datatable white list
-//     *
-//     * @var array
-//     */
-//    protected $dataTableWhiteList = ['action'];
-//
-//    /**
-//     * relations column name used in datatable columns
-//     *
-//     * @var array
-//     */
-//    protected $dataTableRelations = [];
-//
-//    /**
-//     * functions column name used in datatable columns
-//     *
-//     * @var array
-//     */
-//    protected $dataTableFunctions = [];
-//
-//    /**
-//     * The datatable columns title
-//     *
-//     * @var array
-//     */
-//    protected $dataTableColumnsTitle = ['id' => 'User ID'];
-//
-//    /**
-//     * number of items show in one page
-//     *
-//     * @var int
-//     */
-//    protected $datatablePerPage = 10;
-//
-//    /**
-//     * datatable title
-//     *
-//     * @var string
-//     */
-//    protected $datatableTitle = 'Users';
-
     /**
      * get table columns from database
      * @return mixed
