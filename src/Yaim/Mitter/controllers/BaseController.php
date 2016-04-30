@@ -1,5 +1,6 @@
 <?php namespace Yaim\Mitter;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller;
 
 class BaseController extends Controller {
@@ -33,7 +34,7 @@ class BaseController extends Controller {
 	public function index($model)
 	{
 		// get model instance
-		$model = new $this->getModel($model);
+		$model =  $this->getModel($model);
 		// render table
 		$table = view('mitter::layouts.table', $model->renderTable())->render();
 		// view file

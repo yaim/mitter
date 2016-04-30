@@ -162,7 +162,7 @@ trait MitterDataTable
         $query = $query->paginate($this->datatablePerPage ?: 20);
         return [
             'title' => $this->getDatatableTitle(),
-            'createUrl' => $this->getCreateUrl(),
+            'createUrl' => $this->getCreateAction(),
             'head' => $this->getDatatableColumns(true),
             'items' => $this->getDatatableRows($query->items()),
             'paginate' => $query->links()
