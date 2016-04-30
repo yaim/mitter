@@ -4,6 +4,9 @@ namespace Yaim\Mitter;
 
 trait BaseModelTrait {
 
+    use MitterModelActions;
+    use MitterDataTable;
+
 	public function getEditUrl()
 	{		
 		if(isset($this->id)) {
@@ -34,4 +37,23 @@ trait BaseModelTrait {
 	{
 		return $this->name;
 	}
+    
+    /**
+     * Search in model
+     * @param $query
+     * @param $searchTerm
+     * @param array $searchableField
+     * @return mixed
+     */
+    public function scopeSearchByTerm($query, $searchTerm, $searchableField = ['name'])
+    {
+        if (!$searchTerm) {
+            return $query;
+        }
+        return $query->where(function ($query) use ($searchableField, $searchTerm) {
+            foreach ((array)$searchableField as $field) {
+                $query->orWhere($field, 'LIKE', "%$searchTerm%");
+            }
+        });
+    }
 }

@@ -23,6 +23,9 @@ class MitterServiceProvider extends ServiceProvider {
 		$this->publishes([
 			__DIR__.'/resources/assets' => public_path('packages/yaim/mitter'),
 		], 'public');
+		$this->publishes([
+			__DIR__ . '/config/config.php' => config_path('mitter.php'),
+		], 'yaim');
 	}
 
 	/**
@@ -32,7 +35,8 @@ class MitterServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		//
+		require_once 'functions.php';
+		require_once 'routes.php';
 	}
 
 	/**
