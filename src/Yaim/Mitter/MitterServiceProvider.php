@@ -23,6 +23,9 @@ class MitterServiceProvider extends ServiceProvider {
 		$this->publishes([
 			__DIR__.'/resources/assets' => public_path('packages/yaim/mitter'),
 		], 'public');
+		$this->publishes([
+			__DIR__ . '/config/config.php' => config_path('mitter.php'),
+		], 'yaim');
 	}
 
 	/**
