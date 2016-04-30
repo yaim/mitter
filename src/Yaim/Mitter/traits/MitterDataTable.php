@@ -119,16 +119,4 @@ trait MitterDataTable
             'paginate' => $query->links()
         ];
     }
-
-//    /**
-//     * dataTable query
-//     * notice : you can use this
-//     * @return mixed
-//     */
-//    public function datatableQuery()
-//    {
-//        return $this->query();
-//
-//    }
-
 }
