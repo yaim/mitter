@@ -40,7 +40,6 @@ class BaseController extends Controller {
 		$paginate = (!empty($this->paginate)) ? $this->paginate : 20;
 
 
-		if(strlen($search) >= 0) {
 			if(isset($structure['index']['self'])) {
 				if (is_array($structure['index']['self'])) {
 					foreach ($structure['index']['self'] as $self => $title) {
@@ -94,7 +93,6 @@ class BaseController extends Controller {
 					$rows[array_get($model, 'id')][$title] = $value;
 				}
 			}
-		}
 
 		return \View::make($this->view['index'])->with(array('rows' => $rows, 'search' => $search, 'structure' => $structure, 'pagination' => $paginatedModels));
 	}
