@@ -66,18 +66,8 @@ class BaseController extends Controller {
 			if(isset($relations)) {
 				$paginatedModels = $paginatedModels::with($relations);
 			}
-
-			if(is_array($searchableField)) {
-				$paginatedModels = $paginatedModels->where($searchableField[0], 'LIKE', "%$search%");
-				unset($searchableField[0]);
-
-				foreach ($searchableField as $field) {
-					$paginatedModels = $paginatedModels->orWhere($field, 'LIKE', "%$search%");
-				}			
-			} else {
-				$paginatedModels = $paginatedModels->where($searchableField, 'LIKE', "%$search%");
-			}
-
+            $paginatedModels = $paginatedModels->SearchByTerm($search,$searchableField);
+            
 			$paginatedModels = $paginatedModels->orderBy('id', 'desc')->paginate($paginate);
 			$models = $paginatedModels->items();
 
