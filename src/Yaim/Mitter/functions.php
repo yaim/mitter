@@ -81,3 +81,39 @@
 			return $name;
 		}
 	}
+
+	if (!function_exists('getMitterModelByAliasesName')) {
+		/**
+		 * helper for get field trans value
+		 * @param $name : field name
+		 * @return string : translate name
+		 */
+		function getMitterModelByAliasesName($name)
+		{
+			return app(config("mitter.models.aliases.{$name}"));
+		}
+	}
+
+    if (!function_exists('getMitterAliasesByModelName')) {
+        /**
+         * helper for get field trans value
+         * @param $name : field name
+         * @return string : translate name
+         */
+        function getMitterAliasesByModelName($name)
+        {
+            return array_flip(config('mitter.models.aliases'))[$name];
+        }
+    }
+
+    if (!function_exists('hasMitterModelAliases')) {
+        /**
+         * helper for get field trans value
+         * @param $name : field name
+         * @return string : translate name
+         */
+        function hasMitterModelAliases($name)
+        {
+            return (bool)config("mitter.models.aliases.{$name}");
+        }
+    }

@@ -27,74 +27,19 @@ class BaseController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 *
+	 * @param $model
 	 * @return View
 	 */
-	public function index()
+	public function index($model)
 	{
-		$search = (null !== \Input::get('search')) ? \Input::get('search') : "";
-		$structure = $this->structure;
-		$searchableField = isset($structure['searchable_fields'])? $structure['searchable_fields'] : 'name';
-		$required = array();
-		$models = array();
-		$rows = array();
-		$paginate = (!empty($this->paginate)) ? $this->paginate : 20;
+		// get model instance
+		$model = new $this->getModel($model);
+		// render table
+		$table = view('mitter::layouts.table', $model->renderTable())->render();
+		// view file
+		$viewFile = $model->indexView ?: config('mitter.views.index');
 
-
-			if(isset($structure['index']['self'])) {
-				if (is_array($structure['index']['self'])) {
-					foreach ($structure['index']['self'] as $self => $title) {
-						$required[$self]['title'] = $title;
-					}
-				}
-			}
-
-			if(isset($structure['index']['relations'])) {
-				if (is_array($structure['index']['relations'])) {
-					foreach ($structure['index']['relations'] as $relation => $array) {
-						foreach ($array as $key => $value) {
-							$required[$relation.'.'.$key]['title'] = $value;
-						}
-
-						$relations[] = $relation;
-					}
-				}
-			}
-
-			$paginatedModels = new $structure['model'];
-
-			if(isset($relations)) {
-				$paginatedModels = $paginatedModels::with($relations);
-			}
-            $paginatedModels = $paginatedModels->SearchByTerm($search,$searchableField);
-            
-			$paginatedModels = $paginatedModels->orderBy('id', 'desc')->paginate($paginate);
-			$models = $paginatedModels->items();
-
-			foreach ($models as $key => $model) {
-				$models[$key]->revealHidden();
-			}
-
-			list($required_keys) = array_divide($required);
-
-			foreach ($models as $model_key => $model) {
-				foreach ($required_keys as $required_key) {
-					$title = $required[$required_key]['title'];
-					$value = $model->$required_key;
-
-					if (!isset($value)) {
-						$address = explode('.', "$required_key");
-
-						if(is_array($model[$address[0]])) {
-							foreach ($model[$address[0]] as $sub) {
-								$value .= array_get($sub, $address[1]).", ";
-							}
-						}
-					}
-					$rows[array_get($model, 'id')][$title] = $value;
-				}
-			}
-
-		return \View::make($this->view['index'])->with(array('rows' => $rows, 'search' => $search, 'structure' => $structure, 'pagination' => $paginatedModels));
+		return view($viewFile, compact('table'));
 	}
 
 
@@ -221,6 +166,27 @@ class BaseController extends Controller {
 		$url = action($this->structure['controller']."@index");
 
 		return \Redirect::to($url);
+	}
+
+	/**
+	 * @param $model
+	 * @param null $id
+	 * @return mixed
+	 */
+	private function getModel($model, $id = null)
+	{
+		if (!$model instanceof Model) {
+			if (hasMitterModelAliases($model)) {
+				$model = getMitterModelByAliasesName($model);
+			}
+		}
+		if ($model instanceof Model) {
+			if ($id) {
+				$model = $model->findOrFail($id);
+			}
+			return $model;
+		}
+		return abort(404);
 	}
 
 }

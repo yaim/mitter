@@ -4,6 +4,9 @@ namespace Yaim\Mitter;
 
 trait BaseModelTrait {
 
+    use MitterModelActions;
+    use MitterDataTable;
+
 	public function getEditUrl()
 	{		
 		if(isset($this->id)) {
