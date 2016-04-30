@@ -23,14 +23,12 @@ trait MitterDataTable
         if (method_exists($this, 'datatableColumns')) {
             $cols = $this->datatableColumns();
         } else {
-            // get all columns
             $cols = $this->getDatabaseTableColumns();
-            // merge model hidden columns with dataTableExceptColumns
             $except = array_merge($this->getHidden(), ($this->dataTableBlackList ?: []));
             $append = $this->dataTableWhiteList ?: [];
             $cols = array_merge(array_diff($cols, $except), $append);
         }
-        // unique result
+
         $result = array_unique($cols);
 
         if (method_exists($this, 'editDatatableColumns')) {

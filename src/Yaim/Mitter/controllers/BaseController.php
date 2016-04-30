@@ -33,11 +33,8 @@ class BaseController extends Controller {
 	 */
 	public function index($model)
 	{
-		// get model instance
 		$model =  $this->getModel($model);
-		// render table
 		$table = view('mitter::layouts.table', $model->renderTable())->render();
-		// view file
 		$viewFile = $model->indexView ?: config('mitter.views.index');
 
 		return view($viewFile, compact('table'));
