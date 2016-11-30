@@ -744,7 +744,7 @@ class FormBuilder
 			}
 		*/
 
-		$api = $this->getPreFixedAPI($api);
+		$api = url($this->getPreFixedAPI($api));
 		$attributes = "data-selectAjax";
 
 		if($createNew) {
